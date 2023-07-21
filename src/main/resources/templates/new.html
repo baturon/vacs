@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New auto</title>
+</head>
+<body>
+
+<h3> Добавить новый авто</h3>
+<form th:method="POST" th:action="@{/autos}" th:object="${auto}">
+    <label for="brand">Марка автомобиля: </label>
+    <input type="text" th:field="*{brand}" id="brand"/>
+    <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>
+    <br/><br/>
+    <label for="model">Модель автомобиля: </label>
+    <input type="text" th:field="*{model}" id="model"/>
+    <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>
+    <br/><br/>
+    <label for="licensePlate">Номерной знак автомобиля: </label>
+    <input type="text" th:field="*{licensePlate}" id="licensePlate"/>
+    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License plate error</div>
+    <br/><br/>
+    <input type="submit" value="Добавить авто"/>
+</form>
+<hr>
+<a th:href="@{/autos}">На главную страницу </a><br/><br/>
+
+</body>
+</html>

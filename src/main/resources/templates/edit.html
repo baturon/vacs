@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Update auto</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/autos/{id}(id=${auto.getId()})}" th:object="${auto}">
+  <label for="brand">Введите марку: </label>
+  <input type="text" th:field="*{brand}" id="brand"/>
+  <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>
+  <br/>
+  <br/>
+  <label for="model">Введите модель: </label>
+  <input type="text" th:field="*{model}" id="model"/>
+  <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>
+
+  <br/>
+  <br/>
+  <label for="licensePlate">Введите номерной знак: </label>
+  <input type="text" th:field="*{licensePlate}" id="licensePlate"/>
+  <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License plate error</div>
+
+  <br/>
+  <br/>
+  <input type="submit" value="Обновить данные авто!"/>
+</form>
+
+</body>
+</html>
