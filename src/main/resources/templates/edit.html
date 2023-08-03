@@ -24,6 +24,22 @@
 
   <br/>
   <br/>
+  <label for="licensePlate">Введите год выпуска: </label>
+  <input type="text" th:field="*{yearOfIssue}" id="yearOfIssue"/>
+  <div style="color: red" th:if="${#fields.hasErrors('yearOfIssue')}" th:errors="*{yearOfIssue}">Year of issue error</div>
+
+  <br/>
+  <br/>
+  <label for="vinNumber">Введите 17-значный vin-номер: </label>
+  <input type="text" th:field="*{vinNumber}" id="vinNumber"/>
+  <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}">Vin number error</div>
+  <br/>
+  <br/>
+  <label for="mileage">Введите год выпуска: </label>
+  <input type="number" th:field="*{mileage}" id="mileage"/>
+
+  <br/>
+  <br/>
   <input type="submit" value="Обновить данные авто!"/>
 </form>
 

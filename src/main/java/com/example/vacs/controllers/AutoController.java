@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Controller
@@ -18,7 +21,7 @@ public class AutoController {
     private final AutoService autoService;
 
 
-    public AutoController( AutoService autoService) {
+    public AutoController(AutoService autoService) {
         this.autoService = autoService;
     }
 
@@ -31,7 +34,11 @@ public class AutoController {
 
     @GetMapping("/{id}")
     public String autoInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("auto", autoService.getAutoById(id));
+        Auto auto = autoService.getAutoById(id);
+
+        model.addAttribute("auto", auto);
+        model.addAttribute("images", auto.getImages());
+
         return "auto-info";
     }
 
@@ -41,13 +48,21 @@ public class AutoController {
     }
 
 
+//    @GetMapping("/")
+//    public String searchAuto(Model model) {
+//        model.addAttribute("brand", autoService.findAll());
+//        return "autos";
+//    }
+
     @PostMapping()
-    public String createAuto(@ModelAttribute("auto") @Valid Auto auto,
-                             BindingResult bindingResult) {
-        if(bindingResult.hasErrors())
+    public String createAuto(@ModelAttribute("auto") @Valid Auto auto, BindingResult bindingResult,
+                             @RequestParam("file1") MultipartFile file1,
+                             @RequestParam("file2") MultipartFile file2,
+                             @RequestParam("file3") MultipartFile file3) throws IOException {
+        if (bindingResult.hasErrors())
             return "new";
 
-        autoService.saveAuto(auto);
+        autoService.saveAuto(auto, file1, file2, file3);
         return "redirect:/autos";
     }
 
@@ -61,7 +76,7 @@ public class AutoController {
     public String update(@ModelAttribute("auto") @Valid Auto auto,
                          BindingResult bindingResult,
                          @PathVariable("id") Long id) {
-        if(bindingResult.hasErrors())
+        if (bindingResult.hasErrors())
             return "edit";
 
         autoService.updateAuto(id, auto);

@@ -7,15 +7,25 @@
 <body>
 <h1>Информация по авто </h1>
 <hr>
+
+<img th:src="@{/images/${Long.parseLong(auto.getImages().get(0).getId())}}" th:height="100px"/>
+<img th:src="@{/images/${auto.images.get(1)}}" th:height="100px"/>
+<img th:src="@{/images/${auto.images.get(2)}}" th:height="100px"/>
+
 <p th:text="${'Марка: ' + auto.getBrand() }">VALUE</p>
 <p th:text="${'Модель: ' + auto.getModel()}">VALUE</p>
 <p th:text="${'Регистрационный знак:  ' + auto.getLicensePlate()}">VALUE</p>
+<p th:text="${'Год выпуска :  ' + auto.getYearOfIssue()}">VALUE</p>
+<p th:text="${'VIN номер :  ' + auto.getVinNumber()}">VALUE</p>
+<p th:text="${'Пробег :  ' + auto.getMileage()}">VALUE</p>
+
+
 
 <hr>
 <a th:href="@{/autos/{id}/edit(id=${auto.getId()})}">Редактировать </a><br/><br/>
 
 <form th:method="DELETE" th:action="@{/autos/{id}(id=${auto.getId()})}">
-    <input type="submit" value="Удалить авто из базы "/>
+    <input type="submit" value="Удалить авто "/>
 </form>
 <hr>
 <a th:href="@{/autos}">На главную страницу </a><br/><br/>

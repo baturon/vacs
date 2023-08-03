@@ -7,7 +7,7 @@
 <body>
 
 <h3> Добавить новый авто</h3>
-<form th:method="POST" th:action="@{/autos}" th:object="${auto}">
+<form th:method="POST" th:action="@{/autos}" th:object="${auto}" enctype="multipart/form-data">
     <label for="brand">Марка автомобиля: </label>
     <input type="text" th:field="*{brand}" id="brand"/>
     <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>
@@ -18,8 +18,31 @@
     <br/><br/>
     <label for="licensePlate">Номерной знак автомобиля: </label>
     <input type="text" th:field="*{licensePlate}" id="licensePlate"/>
-    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License plate error</div>
+    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License plate
+        error
+    </div>
     <br/><br/>
+
+    <label for="yearOfIssue">Год выпуска: </label>
+    <input type="text" th:field="*{yearOfIssue}" id="yearOfIssue"/>
+    <div style="color: red" th:if="${#fields.hasErrors('yearOfIssue')}" th:errors="*{yearOfIssue}"> yearOfIssue error
+    </div>
+    <br/><br/>
+
+    <label for="vinNumber">VIN номер: </label>
+    <input type="text" th:field="*{vinNumber}" id="vinNumber"/>
+    <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}"> Vin number error</div>
+    <br/><br/>
+
+
+    <label for="mileage">Пробег: </label>
+    <input type="number" th:field="*{mileage}" id="mileage"/>
+    <br/><br/>
+    Первая фотография: <input type="file" name="file1"><br/><br/>
+    Вторая фотография: <input type="file" name="file2"><br/><br/>
+    Третья фотография: <input type="file" name="file3"><br/><br/>
+
+
     <input type="submit" value="Добавить авто"/>
 </form>
 <hr>

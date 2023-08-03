@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AutoRepository extends JpaRepository<Auto, Long> {
-   //Optional<Auto> findAll(Long id);
+
 
 }

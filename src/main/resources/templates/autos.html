@@ -2,19 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Autos</title>
+
+    <style>
+        li {
+            list-style-type: none;
+        }
+    </style>
 </head>
 <body>
 <h1>Автомобили</h1>
 <hr>
-<h4>Список автомобилей</h4>
-<div th:each="auto : ${autos}">
-    <a th:href="@{/autos/{id}(id=${auto.getId()})}"
-       th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
+
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myList li").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+<div class="container">
+    <ul class="list-group" id="myList" >
+        <h2>Список транспортных средств</h2>
+        <p>Введите данные в поле ввода, чтобы найти в списке определенное транспортное средство:</p>
+        <input class="form-control" id="myInput" type="text" placeholder="Поиск...">
+        <br>
+        <div th:each="auto : ${autos}">
+            <li >
+                <a class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
+                   th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
+            </li>
+        </div>
+        <br/>
+        <a class="list-group-item" href="/autos/new">Добавить новый авто </a>
+    </ul>
 </div>
-<br/>
+
 <hr/>
-<a href="/autos/new">Добавить новый авто </a>
 
 
 </body>
