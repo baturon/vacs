@@ -31,35 +31,44 @@ public class AutoService {
     }
 
     @Transactional
-    public void saveAuto(Auto auto, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
-
-        Image image1;
-        Image image2;
-        Image image3;
-        if (file1.getSize() != 0) {
-            image1 = toImageEntity(file1);
-            image1.setPreviewImage(true);
-            auto.addImageToAuto(image1);
+    public void saveAuto(Auto auto, MultipartFile[] files) throws IOException {
+        int count = 0;
+        List<Image> image= new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (file.getSize() != 0) {
+                image.add(toImageEntity(file));
+                auto.addImageToAuto(image.get(count));
+                count ++;
+            }
         }
 
-        if (file2.getSize() != 0) {
-            image2 = toImageEntity(file2);
-            auto.addImageToAuto(image2);
-        }
-        if (file3.getSize() != 0) {
-            image3 = toImageEntity(file3);
-            auto.addImageToAuto(image3);
-        }
+//        Image image1;
+//        Image image2;
+//        Image image3;
+//        if (file1.getSize() != 0) {
+//            image1 = toImageEntity(file1);
+//            image1.setPreviewImage(true);
+//            auto.addImageToAuto(image1);
+//        }
+//
+//        if (file2.getSize() != 0) {
+//            image2 = toImageEntity(file2);
+//            auto.addImageToAuto(image2);
+//        }
+//        if (file3.getSize() != 0) {
+//            image3 = toImageEntity(file3);
+//            auto.addImageToAuto(image3);
+//        }
 
 //        log.info("Saving new {}", auto);
-        Auto autoFromDb=autoRepository.save(auto);
-        autoFromDb.setPreviewImageId(autoFromDb.getImages().get(0).getId());
+        //Auto autoFromDb = autoRepository.save(auto);
+        //autoFromDb.setPreviewImageId(autoFromDb.getImages().get(0).getId());
         autoRepository.save(auto);
 
     }
 
     private Image toImageEntity(MultipartFile file) throws IOException {
-        Image image=new Image();
+        Image image = new Image();
         image.setName(file.getName());
         image.setOriginalFileName(file.getOriginalFilename());
         image.setContentType(file.getContentType());

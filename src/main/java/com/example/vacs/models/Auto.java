@@ -1,12 +1,14 @@
 package com.example.vacs.models;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class Auto {
     @Column(name = "yearOfIssue")
     private String yearOfIssue;
 
-    @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 17, max = 17, message = "Введите VIN-номер 17 символов ")
+    //@NotEmpty(message = "Поле не должно быть пустым")
+    //@Size(min = 17, max = 17, message = "Введите VIN-номер 17 символов ")
     @Column(name = "vinNumber")
     private String vinNumber;
 
@@ -55,14 +57,16 @@ public class Auto {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<Image> images = new ArrayList<>();
-    private Long previewImageId;
+    //private Long previewImageId;
     private LocalDateTime dateOfCreated;
+
 
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
     }
-    public void addImageToAuto(Image image){
+
+    public void addImageToAuto(Image image) {
         image.setAuto(this);
         images.add(image);
     }
