@@ -4,8 +4,6 @@ package com.example.vacs.controllers;
 import com.example.vacs.models.Auto;
 
 
-import com.example.vacs.repositories.FirmRepository;
-import com.example.vacs.repositories.ModelRepository;
 import com.example.vacs.services.AutoService;
 
 import com.example.vacs.services.FirmService;
@@ -19,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -29,7 +30,6 @@ public class AutoController {
     private final AutoService autoService;
 
     private final FirmService firmService;
-//    private final ModelService modelService;
 
 
     @GetMapping()
@@ -45,13 +45,28 @@ public class AutoController {
         model.addAttribute("auto", auto);
         model.addAttribute("images", auto.getImages());
         return "auto-info";
+    } @GetMapping("/photo/{id}")
+    public String photoDamageAuto(@PathVariable("id") Long id, Model model) {
+        Auto auto = autoService.getAutoById(id);
+
+        model.addAttribute("auto", auto);
+        model.addAttribute("images", auto.getImages());
+        return "photo-damage";
     }
 
     @GetMapping("/new")
     public String newAuto(Model model, @ModelAttribute("auto") Auto auto) {
+
+
         model.addAttribute("firms", firmService.getFirmsList());
 //        model.addAttribute("models", modelService.getModelByFirmId());
         model.addAttribute("auto", new Auto());
+        List<Integer> listYears=new ArrayList<>();
+        for (int i =LocalDateTime.now().getYear() ; i >=1960  ; i--) {
+            listYears.add(i);
+        }
+
+        model.addAttribute("years",listYears );
 
         return "new";
     }
@@ -65,7 +80,7 @@ public class AutoController {
 
             throws IOException {
         if (bindingResult.hasErrors())
-            return "new";
+            return "/new";
         model.addAttribute("auto", autoService.findAll());
 
         autoService.saveAuto(auto, files);

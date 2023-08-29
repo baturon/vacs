@@ -3,112 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <title>New auto</title>
 </head>
 <body>
 <script>
-    let input = $('.btn-block');
 
-    // Заменяем на button c сохранением всех атрибутов
-    input.replaceWith(
-        $('<button />')
-            .attr(input.attr())
-            .text(input.val())
-    );
+    // let input = $('.btn-block');
+    //
+    // // Заменяем на button c сохранением всех атрибутов
+    // input.replaceWith(
+    //     $('<button />')
+    //         .attr(input.attr())
+    //         .text(input.val())
+    // );
 
-    $(document).ready(function() {
-        $('#firm_id').change(function()
-        {   getModels();
+
+    // $(document).ready(function () {
+    //     $('#firm_id').change(function () {
+    //         getModels();
+    //     });
+    // });
+    // $(document).ready(function () {
+    //     $.get('/firms', function (data) {
+    //         console.log(data)
+    //         let html = '';
+    //         var len = data.length;
+    //         for (let i = 0; i < len; i++) {
+    //             html += '<option value="' + data[i].name + '">' + data[i].name + '</option>';
+    //         }
+    //         $('#models').append(html);
+    //     });
+    // });
+
+
+    $(document).ready(function () {
+        $('#firm').change(function () {
+            let firmId = $(this).children(":selected").attr("id");
+            let html = ''
+            console.log(firmId)
+            $('#models').empty();
+            html += '<option value="' + '">' + 'Модель автомобиля' + '</option>';
+            $('#models').append(html);
+
+            $.get('/models/' + firmId, function (data) {
+                console.log(data)
+                let html = '';
+                var len = data.length;
+                for (let i = 0; i < len; i++) {
+                    html += '<option value="' + data[i].name + '">' + data[i].name + '</option>';
+                }
+                $('#models').append(html);
+            });
         });
     });
-    $(document).ready(function() {
-        $('#firm').change(function() {
-            var firmId = $(this).children(":selected").attr("id");
-            console.log(firmId)
-            $('#model').empty();
-
-            $.get('/model/' + firmId, function(data) {
-                $.each(data, function(index, model) {
-                    $('#modelDropdown').append($('').text(model.name).val(model.id)); }); }); }); });
 
 </script>
 
-<div class="container">
-    <h3> Добавить новый авто</h3>
-    <form th:method="POST" th:action="@{/autos}" th:object="${auto}" enctype="multipart/form-data">
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <br>
+            <h3> Добавить новый авто</h3>
+            <form   class="was-validated"   th:method="POST" th:action="@{/autos}" th:object="${auto}"
+                  enctype="multipart/form-data">
+                <hr/>
 
-        <!--    <label  for="brand">Марка автомобиля: </label>-->
-        <!--    <input type="text" th:field="*{brand}" id="brand"/>-->
+                    <div class="form-group mb-3  ">
+                        <select class=" form-select  is-valid"  th:field="*{brand}" id="firm" required>
+                            <option value="">Марка автомобиля</option>
+                            <option th:each="firm:${firms}"
+                                    th:value="${firm.getName()}" th:text="${firm.getName()}" th:id="${firm.getId()}">
+                                Марка
+                                автомобиля
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">Выберите марку</div>
+                    </div>
+                    <!--            <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>-->
 
-        <div class="form-group">
-            <label  for="firm">Марка автомобиля: </label>
-            <select th:field="*{brand}" id="firm">
-                <option th:each="firm:${firms}"
-                        th:value="${firm.getName()}" th:text="${firm.getName()}" th:id="${firm.getId()}">
 
-                </option>
-            </select>
-            <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>
+                <div class="form-group mb-3 position-relative">
+                    <select class="form-select "   name="model" id="models" th:field="*{model}" required>
+                        <option value="">Модель автомобиля</option>
+                    </select>
+                    <div class="invalid-feedback">Выберите модель</div>
+                    <!--            <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>-->
+                </div>
+
+                <div class="form-group mb-3 position-relative">
+                    <select class="form-select " required  type="text"
+                            th:field="*{yearOfIssue}" th:id="yearOfIssue">
+                        <option value="">Год выпуска</option>
+                        <option th:each="year:${years}"
+                                th:value="${year}" th:text="${year}">Марка
+                            автомобиля
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">Выберите год</div>
+                </div>
+
+
+                <div class="form-group mb-3 position-relative">
+                    <label for="licensePlate">Номерной знак автомобиля: </label>
+                    <input class="form-control" type="text" th:field="*{licensePlate}" id="licensePlate"
+                           placeholder="1234-AA1" required/>
+                    <div class="invalid-feedback">Введите номерной знак</div>
+<!--                    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">-->
+<!--                        License plate error-->
+<!--                    </div>-->
+                </div>
+
+
+                <!--                <div class="form-group">-->
+                <!--                    <label for="yearOfIssue">Год выпуска: </label>-->
+                <!--                    <input class="form-control" type="text" th:field="*{yearOfIssue}" id="yearOfIssue"/>-->
+                <!--                    <div style="color: red" th:if="${#fields.hasErrors('yearOfIssue')}" th:errors="*{yearOfIssue}">-->
+                <!--                        yearOfIssue-->
+                <!--                        error-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <div class="form-group mb-3 position-relative">
+                    <label for="vinNumber">VIN номер: </label>
+                    <input class="form-control" type="text" th:field="*{vinNumber}" id="vinNumber" required/>
+<!--                    <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}"> Vin-->
+<!--                        number-->
+<!--                        error-->
+<!--                    </div>-->
+                    <div class="invalid-feedback">Введите VIN-номер</div>
+                </div>
+
+
+                <div class="form-group mb-3 position-relative">
+                    <label for="mileage">Пробег: </label>
+                    <input class="form-control" type="number" th:field="*{mileage}" id="mileage" required/>
+                    <div class="invalid-tooltip">Введите пробег</div>
+                </div>
+                <div class="mb-3" position-relative>
+                    <label for="formFile" class="form-label">Загрузите фото профиля авто: </label>
+                    <input class="form-control" name="photo" type="file" id="formFile" required>
+                    <div class="invalid-feedback">Введите пробег</div>
+
+                </div>
+
+                <!--        <label>Загрузите фото профиля авто: </label>-->
+                <!--        <br>-->
+                <!--        <br>-->
+                <!--        <input type="file" name="photo" required #multiple#-->
+                <!--               title="Загрузите одну или несколько фотографий">-->
+
+
+                <div class="d-grid gap-2 mb-3">
+                    <input class="btn btn-secondary" type="submit" value="Добавить авто"/>
+                </div>
+            </form>
+            <hr>
+            <a th:href="@{/autos}">На главную страницу </a><br/><br/>
         </div>
-        <div>
-        <div class="form-group">
-            <label  for="model">Модель автомобиля: </label>
-            <select th:field="*{model}" id="model">
-                <option th:each="model:${models}"
-                        th:value="${model.getName()}" th:text="${model.getName()}">
-
-                </option>
-            </select>
-<!--            <label for="model">Модель автомобиля: </label>-->
-<!--            <input class="form-control" type="text" th:field="*{model}" id="model"/>-->
-            <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>
-        </div>
-
-        <div class="form-group">
-            <label for="licensePlate">Номерной знак автомобиля: </label>
-            <input class="form-control" type="text" th:field="*{licensePlate}" id="licensePlate"/>
-            <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License
-                plate
-                error
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="yearOfIssue">Год выпуска: </label>
-            <input class="form-control" type="text" th:field="*{yearOfIssue}" id="yearOfIssue"/>
-            <div style="color: red" th:if="${#fields.hasErrors('yearOfIssue')}" th:errors="*{yearOfIssue}"> yearOfIssue
-                error
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="vinNumber">VIN номер: </label>
-            <input class="form-control" type="text" th:field="*{vinNumber}" id="vinNumber"/>
-            <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}"> Vin number
-                error
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="mileage">Пробег: </label>
-            <input class="form-control" type="number" th:field="*{mileage}" id="mileage"/>
-        </div>
-
-        <p><input type="file" name="photo" required multiple title="Загрузите одну или несколько фотографий">
-
-        </p>
-        <!--    Первая фотография: <input type="file" name="file1"><br/><br/>-->
-        <!--    Вторая фотография: <input type="file" name="file2"><br/><br/>-->
-        <!--    Третья фотография: <input type="file" name="file3"><br/><br/>-->
-
-
-        <input class="btn-block" type="submit" value="Добавить авто"/>
-    </form>
-    <hr>
-    <a th:href="@{/autos}">На главную страницу </a><br/><br/>
+    </div>
 </div>
 </body>
 </html>

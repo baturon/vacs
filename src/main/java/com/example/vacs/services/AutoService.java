@@ -33,11 +33,13 @@ public class AutoService {
     @Transactional
     public void saveAuto(Auto auto, MultipartFile[] files) throws IOException {
         int count = 0;
-        List<Image> image= new ArrayList<>();
+        List<Image> images= new ArrayList<>();
         for (MultipartFile file : files) {
             if (file.getSize() != 0) {
-                image.add(toImageEntity(file));
-                auto.addImageToAuto(image.get(count));
+
+                images.add(toImagesEntity(file));
+                images.get(0).setPreviewImage(true);
+                auto.addImageToAuto(images.get(count));
                 count ++;
             }
         }
@@ -67,7 +69,7 @@ public class AutoService {
 
     }
 
-    private Image toImageEntity(MultipartFile file) throws IOException {
+    private Image toImagesEntity(MultipartFile file) throws IOException {
         Image image = new Image();
         image.setName(file.getName());
         image.setOriginalFileName(file.getOriginalFilename());

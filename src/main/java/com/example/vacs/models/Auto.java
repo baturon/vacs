@@ -27,13 +27,13 @@ public class Auto {
     @Column(name = "id")
     private Long id;
 
-    @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 20, message = "Название должно содержать от 2 до 20 символов ")
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "Выберите марку")
     @Column(name = "brand")
     private String brand;
 
-    @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 20, message = "Название должно содержать от 2 до 20 символов ")
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "Выберите модель")
     @Column(name = "model")
     private String model;
 

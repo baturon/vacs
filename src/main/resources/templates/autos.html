@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,9 +10,9 @@
 
     <style>
 
-    li {
-    list-style-type: none;
-    }
+        li {
+            list-style-type: none;
+        }
     </style>
 </head>
 <!--<body th:style="'background: url(/img/background5.jpg) no-repeat center center fixed ; background-size: cover;'">-->
@@ -31,23 +31,28 @@
 </script>
 
 
-    <h2 style="color: white ">Vehicle accounting and control system</h2>
-    <hr>
+
 <div class="container">
+    <h2 style="color: black ">Vehicle accounting and control system</h2>
+    <hr>
 
     <ul class="list-group" id="myList">
         <h2>Список транспортных средств</h2>
         <p>Введите данные в поле ввода, чтобы найти в списке определенное транспортное средство:</p>
         <input class="form-control" id="myInput" type="text" placeholder="Поиск...">
         <br>
+        <a class="list-group-item" href="/autos/new">Добавить новый авто... </a>
+        <br/>
+
         <div th:each="auto : ${autos}">
             <li>
-                <a class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
+                <a  class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
                    th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
             </li>
+
         </div>
+
         <br/>
-        <a class="list-group-item" href="/autos/new">Добавить новый авто </a>
     </ul>
 </div>
 
