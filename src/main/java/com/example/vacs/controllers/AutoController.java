@@ -45,28 +45,22 @@ public class AutoController {
         model.addAttribute("auto", auto);
         model.addAttribute("images", auto.getImages());
         return "auto-info";
-    } @GetMapping("/photo/{id}")
-    public String photoDamageAuto(@PathVariable("id") Long id, Model model) {
-        Auto auto = autoService.getAutoById(id);
-
-        model.addAttribute("auto", auto);
-        model.addAttribute("images", auto.getImages());
-        return "photo-damage";
     }
 
+
     @GetMapping("/new")
-    public String newAuto(Model model, @ModelAttribute("auto") Auto auto) {
+    public String newAuto(Model model) {
 
 
         model.addAttribute("firms", firmService.getFirmsList());
 //        model.addAttribute("models", modelService.getModelByFirmId());
         model.addAttribute("auto", new Auto());
-        List<Integer> listYears=new ArrayList<>();
-        for (int i =LocalDateTime.now().getYear() ; i >=1960  ; i--) {
+        List<Integer> listYears = new ArrayList<>();
+        for (int i = LocalDateTime.now().getYear(); i >= 1960; i--) {
             listYears.add(i);
         }
 
-        model.addAttribute("years",listYears );
+        model.addAttribute("years", listYears);
 
         return "new";
     }
@@ -74,10 +68,9 @@ public class AutoController {
 
 //
 
-    @PostMapping()
+    @PostMapping("/create")
     public String createAuto(Model model, @ModelAttribute("auto") @Valid Auto auto, BindingResult bindingResult,
                              @RequestParam("photo") MultipartFile[] files)
-
             throws IOException {
         if (bindingResult.hasErrors())
             return "/new";
@@ -94,11 +87,9 @@ public class AutoController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("auto") @Valid Auto auto,
-                         BindingResult bindingResult,
+    public String update(@ModelAttribute("auto") @Valid Auto auto, BindingResult bindingResult,
                          @PathVariable("id") Long id) {
-        if (bindingResult.hasErrors())
-            return "edit";
+        if (bindingResult.hasErrors()) return "edit";
 
         autoService.updateAuto(id, auto);
         return "redirect:/autos";
@@ -114,4 +105,33 @@ public class AutoController {
     public String autos() {
         return "home";
     }
+
+    @GetMapping("/maintenance-work/{id}")
+    public String maintenanceWork(@PathVariable("id") Long id, Model model) {
+        Auto auto = autoService.getAutoById(id);
+        model.addAttribute("auto", auto);
+        model.addAttribute("maintenanceWork", auto.getMaintenanceWorkList());
+//        model.addAttribute("maintenanceWork",maintenanceWorkService.getMaintenanceWorkByIdAuto(id));
+//        List<NameMaintenanceWork> listNameMaintenanceWork = Arrays.asList(NameMaintenanceWork.values());
+
+//        model.addAttribute("listNameWork", listNameMaintenanceWork);
+        return "maintenance-work";
+    }
+
+    @GetMapping("/photo/{id}")
+    public String photoDamageAuto(@PathVariable("id") Long id, Model model) {
+        Auto auto = autoService.getAutoById(id);
+
+        model.addAttribute("auto", auto);
+        model.addAttribute("images", auto.getImages());
+        return "photo-damage";
+    }
+
+    @PatchMapping("/damagePhoto/add/{id}")
+    public String addDamagePhotoAuto(@PathVariable("id") Long id,
+                                     @RequestParam("photo") MultipartFile[] files) throws IOException {
+        autoService.updatePhotoDamageAuto(id, files);
+        return "redirect:/autos/photo/{id}";
+    }
+
 }

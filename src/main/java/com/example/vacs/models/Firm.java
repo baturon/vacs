@@ -1,6 +1,7 @@
 package com.example.vacs.models;
 
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,9 @@ public class Firm  {
 //            joinColumns = @JoinColumn(name = "firmId",referencedColumnName="id"),
 //            inverseJoinColumns = @JoinColumn(name = "modelsId",referencedColumnName="id"))
 //
+
     @OneToMany(fetch = FetchType.EAGER)
+
     public List<Model> models = new ArrayList<>();
 
 }

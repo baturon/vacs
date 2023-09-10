@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 
 @RestController
 @RequiredArgsConstructor
-public class ImageController {
+public class ImageRestController {
     private final ImageRepository imageRepository;
 
 

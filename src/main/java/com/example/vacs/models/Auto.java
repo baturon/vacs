@@ -55,8 +55,19 @@ public class Auto {
     @Column(name = "mileage")
     private int mileage;
 
+    @Column(name = "mileageNextChangeOil")
+    private int mileageNextChangeOil;
+
+
+    @Column(name = "mileageNextChangeGRM")
+    private int mileageNextChangeGRM;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<Image> images = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
+    private List<MaintenanceWork> maintenanceWorkList = new ArrayList<>();
+
     //private Long previewImageId;
     private LocalDateTime dateOfCreated;
 
@@ -70,4 +81,6 @@ public class Auto {
         image.setAuto(this);
         images.add(image);
     }
+
+
 }

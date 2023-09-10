@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:form="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +16,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <title>New auto</title>
+    <style>
+
+        li {
+            list-style-type: none;
+        }
+    </style>
 </head>
 <body>
 <script>
@@ -75,34 +82,34 @@
         <div class="col-6">
             <br>
             <h3> Добавить новый авто</h3>
-            <form   class="was-validated"   th:method="POST" th:action="@{/autos}" th:object="${auto}"
+            <form th:method="POST" th:action="@{/autos/create}" th:object="${auto}"
                   enctype="multipart/form-data">
                 <hr/>
 
-                    <div class="form-group mb-3  ">
-                        <select class=" form-select  is-valid"  th:field="*{brand}" id="firm" required>
-                            <option value="">Марка автомобиля</option>
-                            <option th:each="firm:${firms}"
-                                    th:value="${firm.getName()}" th:text="${firm.getName()}" th:id="${firm.getId()}">
-                                Марка
-                                автомобиля
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">Выберите марку</div>
-                    </div>
-                    <!--            <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>-->
+                <div class="form-group mb-3  ">
+                    <select class=" form-select" th:field="*{brand}" id="firm" required>
+                        <option value="">Марка автомобиля</option>
+                        <option th:each="firm:${firms}"
+                                th:value="${firm.getName()}" th:text="${firm.getName()}" th:id="${firm.getId()}">
+                            Марка
+                            автомобиля
+                        </option>
+                    </select>
+                    <!--                        <div class="invalid-feedback">Выберите марку</div>-->
+                </div>
+                <!--            <div style="color: red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>-->
 
 
-                <div class="form-group mb-3 position-relative">
-                    <select class="form-select "   name="model" id="models" th:field="*{model}" required>
+                <div class="form-group mb-3 ">
+                    <select class="form-select " name="model" id="models" th:field="*{model}" required>
                         <option value="">Модель автомобиля</option>
                     </select>
-                    <div class="invalid-feedback">Выберите модель</div>
+                    <!--                    <div class="invalid-feedback">Выберите модель</div>-->
                     <!--            <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>-->
                 </div>
 
-                <div class="form-group mb-3 position-relative">
-                    <select class="form-select " required  type="text"
+                <div class="form-group mb-3 ">
+                    <select class="form-select " required type="text"
                             th:field="*{yearOfIssue}" th:id="yearOfIssue">
                         <option value="">Год выпуска</option>
                         <option th:each="year:${years}"
@@ -110,18 +117,18 @@
                             автомобиля
                         </option>
                     </select>
-                    <div class="invalid-feedback">Выберите год</div>
+                    <!--                    <div class="invalid-feedback">Выберите год</div>-->
                 </div>
 
 
-                <div class="form-group mb-3 position-relative">
+                <div class="form-group mb-3 ">
                     <label for="licensePlate">Номерной знак автомобиля: </label>
                     <input class="form-control" type="text" th:field="*{licensePlate}" id="licensePlate"
                            placeholder="1234-AA1" required/>
-                    <div class="invalid-feedback">Введите номерной знак</div>
-<!--                    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">-->
-<!--                        License plate error-->
-<!--                    </div>-->
+                    <!--                    <div class="invalid-feedback">Введите номерной знак</div>-->
+                    <!--                    <div style="color: red" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">-->
+                    <!--                        License plate error-->
+                    <!--                    </div>-->
                 </div>
 
 
@@ -133,38 +140,62 @@
                 <!--                        error-->
                 <!--                    </div>-->
                 <!--                </div>-->
-                <div class="form-group mb-3 position-relative">
+                <div class="form-group mb-3 ">
                     <label for="vinNumber">VIN номер: </label>
                     <input class="form-control" type="text" th:field="*{vinNumber}" id="vinNumber" required/>
-<!--                    <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}"> Vin-->
-<!--                        number-->
-<!--                        error-->
-<!--                    </div>-->
-                    <div class="invalid-feedback">Введите VIN-номер</div>
+                    <!--                    <div style="color: red" th:if="${#fields.hasErrors('vinNumber')}" th:errors="*{vinNumber}"> Vin-->
+                    <!--                        number-->
+                    <!--                        error-->
+                    <!--                    </div>-->
+                    <!--                    <div class="invalid-feedback">Введите VIN-номер</div>-->
                 </div>
 
 
-                <div class="form-group mb-3 position-relative">
+                <div class="form-group mb-3 ">
                     <label for="mileage">Пробег: </label>
-                    <input class="form-control" type="number" th:field="*{mileage}" id="mileage" required/>
-                    <div class="invalid-tooltip">Введите пробег</div>
-                </div>
-                <div class="mb-3" position-relative>
-                    <label for="formFile" class="form-label">Загрузите фото профиля авто: </label>
-                    <input class="form-control" name="photo" type="file" id="formFile" required>
-                    <div class="invalid-feedback">Введите пробег</div>
+                    <input class="form-control" type="number" th:field="*{mileage}" id="mileage" th:min="0"
+                           th:max="999999" required
+                           placeholder="км"/>
+                    <!--                    <div class="invalid-tooltip">Введите пробег</div>-->
 
-                </div>
+                    <div class="form-group mb-3 ">
+                        <label for="mileageNextChangeOil">Следующая замена масла через: </label>
+                        <input class="form-control" type="number" th:field="*{mileageNextChangeOil}"
+                               id="mileageNextChangeOil"
+                               th:min="0"
+                               th:max="999999" required
+                               placeholder="км"/>
+                        <!--                    <div class="invalid-tooltip">Введите пробег</div>-->
+                    </div>
 
-                <!--        <label>Загрузите фото профиля авто: </label>-->
-                <!--        <br>-->
-                <!--        <br>-->
-                <!--        <input type="file" name="photo" required #multiple#-->
-                <!--               title="Загрузите одну или несколько фотографий">-->
+
+                    <div class="form-group mb-3 ">
+                        <label for="mileageNextChangeGRM">Следующая замена ГРМ через: </label>
+                        <input class="form-control" type="number" th:field="*{mileageNextChangeGRM}"
+                               id="mileageNextChangeGRM"
+                               th:min="0"
+                               th:max="999999" required
+                               placeholder="км"/>
+                        <!--                    <div class="invalid-tooltip">Введите пробег</div>-->
+                    </div>
 
 
-                <div class="d-grid gap-2 mb-3">
-                    <input class="btn btn-secondary" type="submit" value="Добавить авто"/>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Загрузите фото профиля авто: </label>
+                        <input class="form-control" name="photo" type="file" id="formFile" required/>
+                        <!--                    <div class="invalid-feedback">Введите пробег</div>-->
+                    </div>
+
+                    <!--        <label>Загрузите фото профиля авто: </label>-->
+                    <!--        <br>-->
+                    <!--        <br>-->
+                    <!--        <input type="file" name="photo" required #multiple#-->
+                    <!--               title="Загрузите одну или несколько фотографий">-->
+
+
+                    <div class="d-grid gap-2 mb-3">
+                        <input class="btn btn-secondary" type="submit" value="Добавить авто"/>
+                    </div>
                 </div>
             </form>
             <hr>
