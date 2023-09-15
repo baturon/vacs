@@ -84,12 +84,13 @@
     </ul>
     <br>
 
-    <h5 class="card-title" th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
-        Auto</h5>
     <br>
 
     <div class="card text-center">
-        <div class="card-header"></div>
+        <div class="card-header">
+            <h5 class="card-title"
+                th:text="${'Ремонтные работы, проделанные с авто'+' '+auto.brand+' '+auto.model+' '+auto.licensePlate}">Auto</h5>
+        </div>
         <div class="card-body">
             <!--            <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
             <!--                  th:object="${maintenanceWorkOil}">-->
