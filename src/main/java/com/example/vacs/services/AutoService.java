@@ -1,9 +1,6 @@
 package com.example.vacs.services;
 
-import com.example.vacs.models.Auto;
-import com.example.vacs.models.Image;
-import com.example.vacs.models.MaintenanceWork;
-import com.example.vacs.models.NameWork;
+import com.example.vacs.models.*;
 import com.example.vacs.repositories.AutoRepository;
 
 
@@ -126,7 +123,7 @@ public class AutoService {
 
     @Transactional
     public List<MaintenanceWork> getMaintenanceWorkListOil(Auto auto) {
-        List<MaintenanceWork>maintenanceWorkListOil= new ArrayList<>();
+        List<MaintenanceWork> maintenanceWorkListOil = new ArrayList<>();
         for (MaintenanceWork maintenanceWork : auto.getMaintenanceWorkList()) {
             if (maintenanceWork.getNameWork() == NameWork.CHANGE_OIL) {
                 maintenanceWorkListOil.add(maintenanceWork);
@@ -137,10 +134,9 @@ public class AutoService {
     }
 
 
-
     @Transactional
     public List<MaintenanceWork> getMaintenanceWorkListGRM(Auto auto) {
-        List<MaintenanceWork> maintenanceWorkListGRM =new ArrayList<>();
+        List<MaintenanceWork> maintenanceWorkListGRM = new ArrayList<>();
         for (MaintenanceWork maintenanceWorkChangeGRM : auto.getMaintenanceWorkList()) {
             if (maintenanceWorkChangeGRM.getNameWork() == NameWork.CHANGE_GRM) {
                 maintenanceWorkListGRM.add(maintenanceWorkChangeGRM);
@@ -176,5 +172,16 @@ public class AutoService {
 
     }
 
+    @Transactional
+    public void saveOtherWorkAuto(Long id, OtherWork otherWork) {
+        Auto auto = autoRepository.findById(id).get();
+        List<OtherWork> otherWorksList = auto.getOtherWorksList();
+        otherWorksList.add(otherWork);
+        auto.setId(id);
+        auto.addOtherWorkToAuto(otherWork);
 
+        autoRepository.save(auto);
+
+
+    }
 }

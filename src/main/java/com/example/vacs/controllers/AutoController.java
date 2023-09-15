@@ -6,6 +6,7 @@ import com.example.vacs.models.Auto;
 
 import com.example.vacs.models.MaintenanceWork;
 import com.example.vacs.models.NameWork;
+import com.example.vacs.models.OtherWork;
 import com.example.vacs.services.AutoService;
 
 import com.example.vacs.services.FirmService;
@@ -141,15 +142,38 @@ public class AutoController {
     }
 
     @PostMapping("/create/maintenance-work/{id}")
-    public String updateMaintenanceWorkToAuto(@PathVariable("id") Long id,
-                                              @ModelAttribute("maintenanceWorkOil") MaintenanceWork maintenanceWorkOil,
-                                              @ModelAttribute("maintenanceWorkGRM") MaintenanceWork maintenanceWorkGRM,
+    public String addMaintenanceWorkToAuto(@PathVariable("id") Long id,
+                                           @ModelAttribute("maintenanceWorkOil") MaintenanceWork maintenanceWorkOil,
+                                           @ModelAttribute("maintenanceWorkGRM") MaintenanceWork maintenanceWorkGRM,
 
-                                              @ModelAttribute("auto") Auto auto, Model model) {
+                                           @ModelAttribute("auto") Auto auto, Model model) {
         model.addAttribute("auto", autoService.getAutoById(id));
 
         autoService.saveMaintenanceWorkAuto(id, maintenanceWorkOil);
         return "redirect:/autos/maintenance-work/{id}";
     }
+
+    @GetMapping("/other-work/{id}")
+    public String otherWork(@PathVariable("id") Long id, Model model) {
+        Auto auto = autoService.getAutoById(id);
+
+
+        model.addAttribute("auto", auto);
+        model.addAttribute("otherWorkList", auto.getOtherWorksList());
+        model.addAttribute("otherWork", new OtherWork());
+
+        return "other-work";
+    }
+
+    @PostMapping("/create/other-work/{id}")
+    public String addOtherWorkToAuto(@PathVariable("id") Long id,
+                                     @ModelAttribute("otherWork") OtherWork otherWork,
+                                     @ModelAttribute("auto") Auto auto, Model model) {
+        model.addAttribute("auto", autoService.getAutoById(id));
+
+        autoService.saveOtherWorkAuto(id, otherWork);
+        return "redirect:/autos/other-work/{id}";
+    }
+
 
 }

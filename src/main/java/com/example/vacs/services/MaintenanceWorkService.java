@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class MaintenanceWorkService {
     private final MaintenanceWorkRepository maintenanceWorkRepository;
 
-    public MaintenanceWork saveMaintenanceWork(MaintenanceWork  maintenanceWork) {
-        return maintenanceWorkRepository.save(maintenanceWork);
-    }
+//    public MaintenanceWork saveMaintenanceWork(MaintenanceWork  maintenanceWork) {
+//        return maintenanceWorkRepository.save(maintenanceWork);
+//    }
 }

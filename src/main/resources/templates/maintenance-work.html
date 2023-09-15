@@ -76,10 +76,10 @@
                th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Документация </a>
+            <a class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Выполненные ремонтные работы </a>
+            <a class="nav-link" href="#">Документация </a>
         </li>
     </ul>
     <br>
@@ -99,13 +99,16 @@
                     <th scope="col">Замена на пробеге</th>
                     <th scope="col">Следующая замена на пробеге</th>
                     <th scope="col">Дата замены</th>
+                    <th scope="col">Комментарии</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="mWork:${maintenanceWorkListOil}">
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${mWork.mileageNextChange}"></td>
-                    <td th:text="${mWork.dateChange.toString()}"></td>
+                    <td th:text="${mWork.dateChange}"></td>
+                    <td th:text="${mWork.comments}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -155,6 +158,11 @@
                                        id="dateChangeOil" required/>
                                 <span></span>
 
+                                <div class="form-floating">
+                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии" id="floatingTextarea"></textarea>
+                                    <label for="floatingTextarea">Комментарии</label>
+                                </div>
+
                             </div>
                         </div>
                             <div class="modal-footer">
@@ -187,6 +195,7 @@
                     <th scope="col">Замена на пробеге</th>
                     <th scope="col">Следующая замена на пробеге</th>
                     <th scope="col">Дата замены</th>
+                    <th scope="col">Комментарии</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -195,6 +204,7 @@
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${mWork.mileageNextChange}"></td>
                     <td th:text="${mWork.dateChange}"></td>
+                    <td th:text="${mWork.comments}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -242,6 +252,11 @@
                                        placeholder=" " th:field="*{dateChange}"
                                        id="dateChange" required/>
                                 <span></span>
+
+                                <div class="form-floating">
+                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии" id="floatingTextareaGRM"></textarea>
+                                    <label for="floatingTextareaGRM">Комментарии</label>
+                                </div>
 
                             </div>
                         </div>

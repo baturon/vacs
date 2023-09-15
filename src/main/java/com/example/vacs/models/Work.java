@@ -21,16 +21,13 @@ public abstract class Work {
     @Column(name = "mileageChange")
     private int mileageChange;
 
-    @Column(name = "mileageNextChange")
-    private int mileageNextChange;
-
-    @Column(name = "nextReplacementIn")
-    private int nextReplacementIn;
-
     @Column(name = "dateChange")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateChange;
+
+    @Column(name = "comments")
+    private String comments;
 
 
     @ManyToOne(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)

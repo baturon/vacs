@@ -47,8 +47,8 @@ public class Auto {
     @Column(name = "yearOfIssue")
     private String yearOfIssue;
 
-    //@NotEmpty(message = "Поле не должно быть пустым")
-    //@Size(min = 17, max = 17, message = "Введите VIN-номер 17 символов ")
+    @NotEmpty(message = "Поле не должно быть пустым")
+    @Size(min = 17, max = 17, message = "Введите VIN-номер 17 символов ")
     @Column(name = "vinNumber")
     private String vinNumber;
 
@@ -73,11 +73,6 @@ public class Auto {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<MaintenanceWork> maintenanceWorkList = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
-//    private List<MaintenanceWork> maintenanceWorkListOil = new ArrayList<>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
-//    private List<MaintenanceWork> maintenanceWorkListGRM = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<OtherWork> otherWorksList = new ArrayList<>();
@@ -100,13 +95,9 @@ public class Auto {
         maintenanceWork.setAuto(this);
         maintenanceWorkList.add(maintenanceWork);
     }
-//    public void addMaintenanceWorkChangeOilToAuto(MaintenanceWork maintenanceWorkChangeOil) {
-//        maintenanceWorkChangeOil.setAuto(this);
-//        maintenanceWorkList.add(maintenanceWorkChangeOil);
-//    }
 
-//    public void addMaintenanceWorkChangeGRMToAuto(MaintenanceWork maintenanceWorkChangeGRM) {
-//        maintenanceWorkChangeGRM.setAuto(this);
-//        maintenanceWorkList.add(maintenanceWorkChangeGRM);
-//    }
+    public void addOtherWorkToAuto(OtherWork otherWork) {
+        otherWork.setAuto(this);
+        otherWorksList.add(otherWork);
+    }
 }

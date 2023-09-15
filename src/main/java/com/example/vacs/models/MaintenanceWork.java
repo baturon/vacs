@@ -18,13 +18,15 @@ public class MaintenanceWork extends Work {
     @Enumerated(EnumType.STRING)
     private NameWork nameWork;
 
+    @Column(name = "mileageNextChange")
+    private int mileageNextChange;
+
+    @Column(name = "nextReplacementIn")
+    private int nextReplacementIn;
+
+
+
     @ManyToOne(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
     private Auto auto;
 
-
-
-
-    public void setMileageNextChangeOil(int mileageNextChange) {
-        super.setMileageNextChange(mileageNextChange);
-    }
 }
