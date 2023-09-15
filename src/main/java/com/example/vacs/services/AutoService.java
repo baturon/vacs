@@ -2,6 +2,8 @@ package com.example.vacs.services;
 
 import com.example.vacs.models.Auto;
 import com.example.vacs.models.Image;
+import com.example.vacs.models.MaintenanceWork;
+import com.example.vacs.models.NameWork;
 import com.example.vacs.repositories.AutoRepository;
 
 
@@ -33,6 +35,7 @@ public class AutoService {
 
     @Transactional
     public void saveAuto(Auto auto, MultipartFile[] files) throws IOException {
+
 //        int count = 0;
         List<Image> images = new ArrayList<>();
 
@@ -48,28 +51,6 @@ public class AutoService {
             }
         }
 
-
-//        Image image1;
-//        Image image2;
-//        Image image3;
-//        if (file1.getSize() != 0) {
-//            image1 = toImageEntity(file1);
-//            image1.setPreviewImage(true);
-//            auto.addImageToAuto(image1);
-//        }
-//
-//        if (file2.getSize() != 0) {
-//            image2 = toImageEntity(file2);
-//            auto.addImageToAuto(image2);
-//        }
-//        if (file3.getSize() != 0) {
-//            image3 = toImageEntity(file3);
-//            auto.addImageToAuto(image3);
-//        }
-
-//        log.info("Saving new {}", auto);
-        //Auto autoFromDb = autoRepository.save(auto);
-        //autoFromDb.setPreviewImageId(autoFromDb.getImages().get(0).getId());
         autoRepository.save(auto);
 
     }
@@ -108,7 +89,7 @@ public class AutoService {
         Auto auto;
         auto = autoRepository.findById(id).get();
         auto.setMileage(updatedAuto.getMileage());
-        auto.setId(id);
+//        auto.setId(id);
 
         autoRepository.save(auto);
     }
@@ -123,7 +104,77 @@ public class AutoService {
                 auto.addImageToAuto(imagesToEntity(file));
             }
         }
-//       autoRepository.save(auto);
+        autoRepository.save(auto);
 
     }
+
+    @Transactional
+    public void saveMaintenanceWorkAuto(Long id, MaintenanceWork maintenanceWork) {
+        Auto auto = autoRepository.findById(id).get();
+
+        //maintenanceWork.setNameWork(NameWork.CHANGE_OIL);
+
+        maintenanceWork.setMileageNextChange(maintenanceWork.getNextReplacementIn() + maintenanceWork.getMileageChange());
+        List<MaintenanceWork> maintenanceWorkList = auto.getMaintenanceWorkList();
+        maintenanceWorkList.add(maintenanceWork);
+        auto.setId(id);
+        auto.addMaintenanceWorkToAuto(maintenanceWork);
+
+        autoRepository.save(auto);
+
+    }
+
+    @Transactional
+    public List<MaintenanceWork> getMaintenanceWorkListOil(Auto auto) {
+        List<MaintenanceWork>maintenanceWorkListOil= new ArrayList<>();
+        for (MaintenanceWork maintenanceWork : auto.getMaintenanceWorkList()) {
+            if (maintenanceWork.getNameWork() == NameWork.CHANGE_OIL) {
+                maintenanceWorkListOil.add(maintenanceWork);
+            }
+        }
+//        Collections.sort(maintenanceWorkListOil, Comparator.comparing(MaintenanceWork::getDateChange));
+        return maintenanceWorkListOil;
+    }
+
+
+
+    @Transactional
+    public List<MaintenanceWork> getMaintenanceWorkListGRM(Auto auto) {
+        List<MaintenanceWork> maintenanceWorkListGRM =new ArrayList<>();
+        for (MaintenanceWork maintenanceWorkChangeGRM : auto.getMaintenanceWorkList()) {
+            if (maintenanceWorkChangeGRM.getNameWork() == NameWork.CHANGE_GRM) {
+                maintenanceWorkListGRM.add(maintenanceWorkChangeGRM);
+            }
+        }
+//        Collections.sort(maintenanceWorkListOil, Comparator.comparing(MaintenanceWork::getDateChange));
+        return maintenanceWorkListGRM;
+    }
+
+    @Transactional
+    public MaintenanceWork getMaintenanceWorkLastChangeOil(Auto auto) {
+        MaintenanceWork maintenanceWorkLastChangeOil;
+        if (getMaintenanceWorkListOil(auto).isEmpty()) {
+            maintenanceWorkLastChangeOil = null;
+        } else {
+            maintenanceWorkLastChangeOil = getMaintenanceWorkListOil(auto).get(getMaintenanceWorkListOil(auto).size() - 1);
+        }
+
+        return maintenanceWorkLastChangeOil;
+    }
+
+
+    @Transactional
+    public MaintenanceWork getMaintenanceWorkLastChangeGRM(Auto auto) {
+        MaintenanceWork maintenanceWorkLastChangeGRM;
+        if (getMaintenanceWorkListGRM(auto).isEmpty()) {
+            maintenanceWorkLastChangeGRM = null;
+        } else {
+            maintenanceWorkLastChangeGRM = getMaintenanceWorkListGRM(auto).get(getMaintenanceWorkListOil(auto).size() - 1);
+        }
+
+        return maintenanceWorkLastChangeGRM;
+
+    }
+
+
 }

@@ -58,12 +58,13 @@
         </li>
     </ul>
     <br>
+    <h5 class="card-title" th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}" >Auto</h5>
     <br>
     <form th:method="PATCH" th:action="@{/autos/damagePhoto/add/{id}(id=${auto.getId()})}" th:object="${auto}"
           enctype="multipart/form-data">
-        <div class="thumb ">
+        <div class="thumb">
             <span th:if="${auto.getImages().size()==1}">
-            <img th:src="@{/img/background1.jpg}" alt="Здесь может быть фото с повреждениями" />
+            <img class="opacity-25" th:src="@{/img/background1.jpg}" alt="" />
             </span>
             <div class="row" th:unless="${auto.getImages().isEmpty()}" th:each="id,stat:${auto.getImages()}">
 
@@ -71,14 +72,15 @@
             <span th:unless="${auto.images.get(stat.index).isPreviewImage()}">
             <img th:src="@{/images/{id}(id=${auto.images.get(stat.index).getId()})}"
                  th:height="200" class="scale img-rounded" alt=""/>
-            <div
-                    th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">YearOfIssue
+            <div class="text-muted mb-3"
+                    th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">date download
             </div>
             </span>
             </div>
-
+            <br>
+            <br>
         </div>
-        <div class="mb-3">
+        <div class="text-muted mb-3">
             <label for="formFile" class="form-label">Загрузите фото авто с повреждениями: </label>
             <input class="form-control" name="photo" type="file" id="formFile" multiple/>
             <!--                    <div class="invalid-feedback">Введите пробег</div>-->

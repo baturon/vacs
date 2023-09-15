@@ -97,28 +97,37 @@
             <ul class="list-group ">
                 <!--                <li class="list-group-item" th:text="${'Марка: ' + auto.getBrand() }">Brand</li>-->
                 <!--                <li class="list-group-item" th:text="${'Модель: ' + auto.getModel()}">Model</li>-->
-                <li class="list-group-item d-flex align-items-center" th:text="${'Регистрационный знак:  ' + auto.getLicensePlate()}">
+                <li class="list-group-item d-flex align-items-center"
+                    th:text="${'Регистрационный знак:  ' + auto.getLicensePlate()}">
                     LicensePlate
                 </li>
-                <li class="list-group-item d-flex align-items-center" th:text="${'Год выпуска :  ' + auto.getYearOfIssue()}">YearOfIssue</li>
-                <li class="list-group-item d-flex align-items-center" th:text="${'VIN номер :  ' + auto.getVinNumber()}">VinNumber</li>
-                <li class="list-group-item d-flex align-items-center" th:text="${'Пробег :  ' + auto.getMileage()}">
-                    Mileage </li>
+                <li class="list-group-item d-flex align-items-center"
+                    th:text="${'Год выпуска :  ' + auto.getYearOfIssue()}">YearOfIssue
+                </li>
+                <li class="list-group-item d-flex align-items-center"
+                    th:text="${'VIN номер :  ' + auto.getVinNumber()}">VinNumber
+                </li>
+                <li class="list-group-item d-flex align-items-center" th:text="${'Пробег :  ' + auto.getMileage()}+' км'">
+                    Mileage
+                </li>
+                <li class="list-group-item d-flex align-items-center" th:if="${maintenanceWorkLastChangeOil!=null} and ${maintenanceWorkLastChangeOil.mileageNextChange > auto.mileage}">
+                    <h5 th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeOil.mileageNextChange - auto.mileage) +' км'}"></h5>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center" th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}">
+                    <h5 th:text="${'Замена ГРМ через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}"></h5>
+                </li>
 
                 <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
                         data-bs-target="#changeMileageModal">Обновить
                     пробег
                 </button>
-
-
-
             </ul>
         </div>
     </div>
 
 
-    <br>
-    <br>
+
     <!--    <form th:method="PATCH" th:action="@{/update/mileage/auto/{id}(id=${auto.getId()})}" th:object="${auto}">-->
     <!--<script>-->
     <!--    $('#autoEditDialog').on('shown.bs.modal', function(event){-->
@@ -187,10 +196,10 @@
 
                         </div>
 
-                    <div class="modal-footer">
-                        <input type="submit"  class="btn btn-primary" value="Обновить пробег"/>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Обновить пробег"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -209,13 +218,47 @@
     <!--    </form>-->
 
 
-    <a th:href="@{/autos/{id}/edit(id=${auto.getId()})}">Редактировать </a><br/><br/>
+    <!--    <a th:href="@{/autos/{id}/edit(id=${auto.getId()})}">Редактировать </a><br/><br/>-->
 
-    <form th:method="DELETE" th:action="@{/autos/{id}(id=${auto.getId()})}">
-        <input class="btn-block" type="submit" value="Удалить авто "/>
+    <!-- Button trigger modal -->
+    <div class="d-grid gap-2 mb-3">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Удалить авто
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Удаление авто</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text">
+                        Вы уверены,что хотите удалить профиль авто и всю информацию о нем?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form th:method="DELETE" th:action="@{/autos/{id}(id=${auto.getId()})}">
+
+                            <input class="btn btn-danger" type="submit" value="Удалить авто "/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-    </form>
+    <!--    <form th:method="DELETE" th:action="@{/autos/{id}(id=${auto.getId()})}">-->
+    <!--        <div class="d-grid gap-2 mb-3">-->
+    <!--            <input class="btn btn-secondary" type="submit" value="Удалить авто "/>-->
+    <!--        </div>-->
+
+    <!--    </form>-->
     <hr>
 
 

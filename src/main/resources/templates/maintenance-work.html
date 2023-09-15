@@ -17,9 +17,48 @@
     <title>Maintenance-work</title>
 </head>
 <body>
-<div class="container mb-3 ">
-    <br>
 
+<style>
+    input[type="number"]:invalid + span:after {
+        content: '';
+        padding-left: 5px;
+        color: red;
+    }
+
+    input[type="number"]:valid + span:after {
+        content: '✓';
+        padding-left: 5px;
+        color: green;
+    }
+
+
+    input[type="date"]:invalid + span:after {
+        content: '';
+        padding-left: 5px;
+        color: red;
+    }
+
+    input[type="date"]:valid + span:after {
+        content: '✓';
+        padding-left: 5px;
+        color: green;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
+
+
+</style>
+
+<div class="container mb-3 align-items-center">
+
+    <br>
+    <!--    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
+    <!--          th:object="${maintenanceWork}">-->
     <ul class="nav nav-underline">
         <li class="nav-item">
             <a class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
@@ -42,29 +81,185 @@
         <li class="nav-item">
             <a class="nav-link" href="#">Выполненные ремонтные работы </a>
         </li>
-        <br>
+    </ul>
+    <br>
 
+    <h5 class="card-title"
+        th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">Auto</h5>
+    <br>
 
-        <form th:method="POST" th:action="@{/autos/maintenance-work/{id}(id=${auto.getId()})}"
-              th:object="${maintenanceWork}">
-            <div class="card text-center">
-                <div class="card-header">
-                    Рекомендуемые
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Особое обращение с заголовком</h5>
-                    <p class="card-text">С вспомогательным текстом ниже в качестве естественного перехода к
-                        дополнительному
-                        контенту.</p>
-                    <a href="#" class="btn btn-primary">Перейти куда-нибудь</a>
-                </div>
-                <div class="card-footer text-muted">
-                    2 дня спустя
+    <div class="card text-center">
+        <div class="card-header" th:text="${maintenanceWorkOil.nameWork.title}"></div>
+        <div class="card-body">
+            <!--            <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
+            <!--                  th:object="${maintenanceWorkOil}">-->
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Замена на пробеге</th>
+                    <th scope="col">Следующая замена на пробеге</th>
+                    <th scope="col">Дата замены</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mWork:${maintenanceWorkListOil}">
+                    <td th:text="${mWork.mileageChange}"></td>
+                    <td th:text="${mWork.mileageNextChange}"></td>
+                    <td th:text="${mWork.dateChange.toString()}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                    data-bs-target="#dataChangeOilModal">Обновить данные замены масла
+            </button>
+
+        </div>
+
+        <!--Modal-->
+        <div class="modal fade" id="dataChangeOilModal" role="dialog" tabindex="-1"
+             aria-labelledby="modalWindowsLabelOil"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalWindowsLabelOil">Обновление данных замены масла</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"
+                          th:object="${maintenanceWorkOil}">
+                        <div class="modal-body">
+
+                            <div>
+
+                                <label for="mileageChange">Введите пробег замены масла </label>
+                                <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
+                                       th:field="*{mileageChange}" id="mileageChange"
+                                       th:min="0" th:max="999999" required placeholder="км"/>
+                                <span></span>
+
+                                <input type="hidden" value="CHANGE_OIL" name='nameWork'>
+
+                                <label for="mileageNextChangeOil">Введите пробег, через который следующая замена
+                                    масла</label>
+                                <input type="number" placeholder="км" value=""
+                                       class="form-control mb-3 w-auto d-inline-flex"
+                                       th:field="*{nextReplacementIn}" id="mileageNextChangeOil" th:min="0"
+                                       th:max="999999"
+                                       required/>
+                                <span></span>
+                                <br>
+                                <label for="dateChangeOil">Введите дату замены масла</label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " th:field="*{dateChange}"
+                                       id="dateChangeOil" required/>
+                                <span></span>
+
+                            </div>
+                        </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" value="Обновить данные"/>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-        </form>
-    </ul>
+        <div class="card-footer text-muted">
+            2 дня спустя
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!--    Change GRM-->
+
+
+    <br>
+
+    <div class="card text-center">
+        <div class="card-header" th:text="${maintenanceWorkGRM.nameWork.title}"></div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Замена на пробеге</th>
+                    <th scope="col">Следующая замена на пробеге</th>
+                    <th scope="col">Дата замены</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mWork:${maintenanceWorkListGRM}">
+<!--                    th:if="${mWork.nameWork==maintenanceWorkOil.nameWork.CHANGE_GRM}">-->
+                    <td th:text="${mWork.mileageChange}"></td>
+                    <td th:text="${mWork.mileageNextChange}"></td>
+                    <td th:text="${mWork.dateChange}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                    data-bs-target="#dataChangeGRMModal">Обновить данные замены ГРМ
+            </button>
+
+        </div>
+
+        <!--Modal-->
+        <div class="modal fade" id="dataChangeGRMModal" role="dialog" tabindex="-1"
+             aria-labelledby="modalWindowsLabelGRM"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalWindowsLabelGRM">Обновление данных замены ГРМ</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"
+                          th:object="${maintenanceWorkGRM}">
+                        <div class="modal-body">
+
+                            <div>
+
+                                <label for="mileageChangeGRM">Введите пробег замены ГРМ </label>
+                                <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
+                                       th:field="*{mileageChange}" id="mileageChangeGRM"
+                                       th:min="0" th:max="999999" required placeholder="км"/>
+                                <span></span>
+
+                                <input type="hidden" value="CHANGE_GRM" name='nameWork'>
+
+                                <label for="mileageNextChange">Введите пробег, через который следующая замена
+                                    ГРМ</label>
+                                <input type="number" placeholder="км" value=""
+                                       class="form-control mb-3 w-auto d-inline-flex"
+                                       th:field="*{nextReplacementIn}" id="mileageNextChange" th:min="0" th:max="999999"
+                                       required/>
+                                <span></span>
+                                <br>
+                                <label for="dateChange">Введите дату замены ГРМ</label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " th:field="*{dateChange}"
+                                       id="dateChange" required/>
+                                <span></span>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Обновить данные"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-footer text-muted">
+            Осталось км
+        </div>
+    </div>
 </div>
 </body>
 </html>

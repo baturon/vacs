@@ -4,6 +4,8 @@ package com.example.vacs.controllers;
 import com.example.vacs.models.Auto;
 
 
+import com.example.vacs.models.MaintenanceWork;
+import com.example.vacs.models.NameWork;
 import com.example.vacs.services.AutoService;
 
 import com.example.vacs.services.FirmService;
@@ -31,7 +33,6 @@ public class AutoController {
 
     private final FirmService firmService;
 
-
     @GetMapping()
     public String autos(Model model) {
         model.addAttribute("autos", autoService.findAll());
@@ -41,7 +42,9 @@ public class AutoController {
     @GetMapping("/{id}")
     public String autoInfo(@PathVariable("id") Long id, Model model) {
         Auto auto = autoService.getAutoById(id);
-
+//        System.out.println(autoService.getMaintenanceWorkLastChangeOil(auto));
+        model.addAttribute("maintenanceWorkLastChangeOil", autoService.getMaintenanceWorkLastChangeOil(auto));
+        model.addAttribute("maintenanceWorkLastChangeGRM", autoService.getMaintenanceWorkLastChangeGRM(auto));
         model.addAttribute("auto", auto);
         model.addAttribute("images", auto.getImages());
         return "auto-info";
@@ -66,16 +69,13 @@ public class AutoController {
     }
 
 
-//
-
-    @PostMapping("/create")
+    @PostMapping("/create/auto")
     public String createAuto(Model model, @ModelAttribute("auto") @Valid Auto auto, BindingResult bindingResult,
                              @RequestParam("photo") MultipartFile[] files)
             throws IOException {
         if (bindingResult.hasErrors())
             return "/new";
         model.addAttribute("auto", autoService.findAll());
-
         autoService.saveAuto(auto, files);
         return "redirect:/autos";
     }
@@ -106,17 +106,6 @@ public class AutoController {
         return "home";
     }
 
-    @GetMapping("/maintenance-work/{id}")
-    public String maintenanceWork(@PathVariable("id") Long id, Model model) {
-        Auto auto = autoService.getAutoById(id);
-        model.addAttribute("auto", auto);
-        model.addAttribute("maintenanceWork", auto.getMaintenanceWorkList());
-//        model.addAttribute("maintenanceWork",maintenanceWorkService.getMaintenanceWorkByIdAuto(id));
-//        List<NameMaintenanceWork> listNameMaintenanceWork = Arrays.asList(NameMaintenanceWork.values());
-
-//        model.addAttribute("listNameWork", listNameMaintenanceWork);
-        return "maintenance-work";
-    }
 
     @GetMapping("/photo/{id}")
     public String photoDamageAuto(@PathVariable("id") Long id, Model model) {
@@ -132,6 +121,35 @@ public class AutoController {
                                      @RequestParam("photo") MultipartFile[] files) throws IOException {
         autoService.updatePhotoDamageAuto(id, files);
         return "redirect:/autos/photo/{id}";
+    }
+
+    @GetMapping("/maintenance-work/{id}")
+    public String maintenanceWork(@PathVariable("id") Long id, Model model) {
+        Auto auto = autoService.getAutoById(id);
+        MaintenanceWork maintenanceWorkOil = new MaintenanceWork();
+        maintenanceWorkOil.setNameWork(NameWork.CHANGE_OIL);
+        MaintenanceWork maintenanceWorkGRM = new MaintenanceWork();
+        maintenanceWorkGRM.setNameWork(NameWork.CHANGE_GRM);
+
+        model.addAttribute("auto", auto);
+//        model.addAttribute("maintenanceWorkList", auto.getMaintenanceWorkList());
+        model.addAttribute("maintenanceWorkListOil", autoService.getMaintenanceWorkListOil(auto));
+        model.addAttribute("maintenanceWorkListGRM", autoService.getMaintenanceWorkListGRM(auto));
+        model.addAttribute("maintenanceWorkOil", maintenanceWorkOil);
+        model.addAttribute("maintenanceWorkGRM", maintenanceWorkGRM);
+        return "maintenance-work";
+    }
+
+    @PostMapping("/create/maintenance-work/{id}")
+    public String updateMaintenanceWorkToAuto(@PathVariable("id") Long id,
+                                              @ModelAttribute("maintenanceWorkOil") MaintenanceWork maintenanceWorkOil,
+                                              @ModelAttribute("maintenanceWorkGRM") MaintenanceWork maintenanceWorkGRM,
+
+                                              @ModelAttribute("auto") Auto auto, Model model) {
+        model.addAttribute("auto", autoService.getAutoById(id));
+
+        autoService.saveMaintenanceWorkAuto(id, maintenanceWorkOil);
+        return "redirect:/autos/maintenance-work/{id}";
     }
 
 }

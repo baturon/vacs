@@ -55,18 +55,32 @@ public class Auto {
     @Column(name = "mileage")
     private int mileage;
 
-    @Column(name = "mileageNextChangeOil")
-    private int mileageNextChangeOil;
 
 
-    @Column(name = "mileageNextChangeGRM")
-    private int mileageNextChangeGRM;
+//    @OneToOne(fetch = FetchType.LAZY,mappedBy = "auto")
+//    private MaintenanceWork maintenanceWorkLastChangeOil;
+
+//    @Column(name = "mileageNextChangeOil")
+//    private int mileageNextChangeOil;
+
+
+//    @Column(name = "mileageNextChangeGRM")
+//    private int mileageNextChangeGRM;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<MaintenanceWork> maintenanceWorkList = new ArrayList<>();
+
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
+//    private List<MaintenanceWork> maintenanceWorkListOil = new ArrayList<>();
+//
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
+//    private List<MaintenanceWork> maintenanceWorkListGRM = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
+    private List<OtherWork> otherWorksList = new ArrayList<>();
 
     //private Long previewImageId;
     private LocalDateTime dateOfCreated;
@@ -82,5 +96,17 @@ public class Auto {
         images.add(image);
     }
 
+    public void addMaintenanceWorkToAuto(MaintenanceWork maintenanceWork) {
+        maintenanceWork.setAuto(this);
+        maintenanceWorkList.add(maintenanceWork);
+    }
+//    public void addMaintenanceWorkChangeOilToAuto(MaintenanceWork maintenanceWorkChangeOil) {
+//        maintenanceWorkChangeOil.setAuto(this);
+//        maintenanceWorkList.add(maintenanceWorkChangeOil);
+//    }
 
+//    public void addMaintenanceWorkChangeGRMToAuto(MaintenanceWork maintenanceWorkChangeGRM) {
+//        maintenanceWorkChangeGRM.setAuto(this);
+//        maintenanceWorkList.add(maintenanceWorkChangeGRM);
+//    }
 }

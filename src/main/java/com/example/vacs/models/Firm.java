@@ -24,11 +24,6 @@ public class Firm  {
     @Column(name = "name")
     private String name;
 
-    //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "firm")
-//    @JoinTable(name="firm_models",
-//            joinColumns = @JoinColumn(name = "firmId",referencedColumnName="id"),
-//            inverseJoinColumns = @JoinColumn(name = "modelsId",referencedColumnName="id"))
-//
 
     @OneToMany(fetch = FetchType.EAGER)
 
