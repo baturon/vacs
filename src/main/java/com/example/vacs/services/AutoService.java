@@ -129,22 +129,10 @@ public class AutoService {
                 maintenanceWorkListOil.add(maintenanceWork);
             }
         }
-//        Collections.sort(maintenanceWorkListOil, Comparator.comparing(MaintenanceWork::getDateChange));
+        Collections.sort(maintenanceWorkListOil, Comparator.comparing(MaintenanceWork::getDateChange));
         return maintenanceWorkListOil;
     }
 
-
-    @Transactional
-    public List<MaintenanceWork> getMaintenanceWorkListGRM(Auto auto) {
-        List<MaintenanceWork> maintenanceWorkListGRM = new ArrayList<>();
-        for (MaintenanceWork maintenanceWorkChangeGRM : auto.getMaintenanceWorkList()) {
-            if (maintenanceWorkChangeGRM.getNameWork() == NameWork.CHANGE_GRM) {
-                maintenanceWorkListGRM.add(maintenanceWorkChangeGRM);
-            }
-        }
-//        Collections.sort(maintenanceWorkListOil, Comparator.comparing(MaintenanceWork::getDateChange));
-        return maintenanceWorkListGRM;
-    }
 
     @Transactional
     public MaintenanceWork getMaintenanceWorkLastChangeOil(Auto auto) {
@@ -165,11 +153,23 @@ public class AutoService {
         if (getMaintenanceWorkListGRM(auto).isEmpty()) {
             maintenanceWorkLastChangeGRM = null;
         } else {
-            maintenanceWorkLastChangeGRM = getMaintenanceWorkListGRM(auto).get(getMaintenanceWorkListOil(auto).size() - 1);
+            maintenanceWorkLastChangeGRM = getMaintenanceWorkListGRM(auto).get(getMaintenanceWorkListGRM(auto).size() - 1);
         }
 
         return maintenanceWorkLastChangeGRM;
 
+    }
+
+    @Transactional
+    public List<MaintenanceWork> getMaintenanceWorkListGRM(Auto auto) {
+        List<MaintenanceWork> maintenanceWorkListGRM = new ArrayList<>();
+        for (MaintenanceWork maintenanceWorkChangeGRM : auto.getMaintenanceWorkList()) {
+            if (maintenanceWorkChangeGRM.getNameWork() == NameWork.CHANGE_GRM) {
+                maintenanceWorkListGRM.add(maintenanceWorkChangeGRM);
+            }
+        }
+        Collections.sort(maintenanceWorkListGRM, Comparator.comparing(MaintenanceWork::getDateChange));
+        return maintenanceWorkListGRM;
     }
 
     @Transactional
@@ -179,9 +179,6 @@ public class AutoService {
         otherWorksList.add(otherWork);
         auto.setId(id);
         auto.addOtherWorkToAuto(otherWork);
-
         autoRepository.save(auto);
-
-
     }
 }

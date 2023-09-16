@@ -12,6 +12,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -74,6 +76,8 @@ public class Auto {
     private List<MaintenanceWork> maintenanceWorkList = new ArrayList<>();
 
 
+
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<OtherWork> otherWorksList = new ArrayList<>();
 
@@ -99,5 +103,10 @@ public class Auto {
     public void addOtherWorkToAuto(OtherWork otherWork) {
         otherWork.setAuto(this);
         otherWorksList.add(otherWork);
+    }
+
+    public List<OtherWork> getOtherWorksList() {
+        Collections.sort(otherWorksList, Comparator.comparing(OtherWork::getDateChange));
+        return otherWorksList;
     }
 }

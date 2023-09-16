@@ -51,6 +51,10 @@
         margin: 0;
     }
 
+    li {
+        list-style-type: none;
+    }
+
 
 </style>
 
@@ -138,7 +142,7 @@
                                 <label for="mileageChange">Введите пробег замены масла </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
                                        th:field="*{mileageChange}" id="mileageChange"
-                                       th:min="0" th:max="999999" required placeholder="км"/>
+                                       th:min="0" th:max="${auto.mileage}" required placeholder="км"  />
                                 <span></span>
 
                                 <input type="hidden" value="CHANGE_OIL" name='nameWork'>
@@ -159,23 +163,41 @@
                                 <span></span>
 
                                 <div class="form-floating">
-                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии" id="floatingTextarea"></textarea>
+                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии"
+                                              id="floatingTextarea"></textarea>
                                     <label for="floatingTextarea">Комментарии</label>
                                 </div>
 
                             </div>
                         </div>
-                            <div class="modal-footer">
-                                <input type="submit" class="btn btn-primary" value="Обновить данные"/>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Обновить данные"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
 
         <div class="card-footer text-muted">
-            2 дня спустя
+            <li class="list-group-item d-flex align-items-center"
+                th:if="${maintenanceWorkLastChangeOil!=null} and ${maintenanceWorkLastChangeOil.mileageNextChange > auto.mileage}"
+                th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeOil.mileageNextChange - auto.mileage) +' км'}">
+            </li>
+
+            <li th:if="${maintenanceWorkLastChangeOil==null}">
+                <div class="list-group-item d-flex align-items-center">
+                    <h6 style="color: black" th:text="'Данных по замене масла нет'"></h6>
+                </div>
+            </li>
+            <li th:if="${maintenanceWorkLastChangeOil!=null}">
+                <div th:if="${maintenanceWorkLastChangeOil.mileageNextChange <auto.mileage} "
+                     class="list-group-item d-flex align-items-center">
+                    <h6 style="color: red"
+                        th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeOil.mileageNextChange}+' км'"></h6>
+                </div>
+            </li>
+
         </div>
     </div>
     <br>
@@ -200,7 +222,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="mWork:${maintenanceWorkListGRM}">
-<!--                    th:if="${mWork.nameWork==maintenanceWorkOil.nameWork.CHANGE_GRM}">-->
+                    <!--                    th:if="${mWork.nameWork==maintenanceWorkOil.nameWork.CHANGE_GRM}">-->
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${mWork.mileageNextChange}"></td>
                     <td th:text="${mWork.dateChange}"></td>
@@ -234,7 +256,7 @@
                                 <label for="mileageChangeGRM">Введите пробег замены ГРМ </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
                                        th:field="*{mileageChange}" id="mileageChangeGRM"
-                                       th:min="0" th:max="999999" required placeholder="км"/>
+                                       th:min="0" th:max="${auto.mileage}" required placeholder="км"/>
                                 <span></span>
 
                                 <input type="hidden" value="CHANGE_GRM" name='nameWork'>
@@ -254,7 +276,8 @@
                                 <span></span>
 
                                 <div class="form-floating">
-                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии" id="floatingTextareaGRM"></textarea>
+                                    <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии"
+                                              id="floatingTextareaGRM"></textarea>
                                     <label for="floatingTextareaGRM">Комментарии</label>
                                 </div>
 
@@ -272,7 +295,26 @@
 
 
         <div class="card-footer text-muted">
-            Осталось км
+            <div class="card-footer text-muted">
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}"
+                    th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}">
+                </li>
+
+                <li th:if="${maintenanceWorkLastChangeGRM==null}">
+                    <div class="list-group-item d-flex align-items-center">
+                        <h6 style="color: black" th:text="'Данных по замене масла нет'"></h6>
+                    </div>
+                </li>
+                <li th:if="${maintenanceWorkLastChangeGRM!=null}">
+                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange <auto.mileage} "
+                         class="list-group-item d-flex align-items-center">
+                        <h6 style="color: red"
+                            th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeGRM.mileageNextChange}+' км'"></h6>
+                    </div>
+                </li>
+
+            </div>
         </div>
     </div>
 </div>

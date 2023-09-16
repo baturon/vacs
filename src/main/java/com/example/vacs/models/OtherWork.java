@@ -10,11 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Table(name = "other_work")
 public class OtherWork extends Work {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "name_work")
     private String nameWork;
 
@@ -24,8 +19,10 @@ public class OtherWork extends Work {
     @Column(name = "cost_work")
     private int costWork;
 
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Auto auto;
+
 }
 
 

@@ -136,6 +136,8 @@ public class AutoController {
 //        model.addAttribute("maintenanceWorkList", auto.getMaintenanceWorkList());
         model.addAttribute("maintenanceWorkListOil", autoService.getMaintenanceWorkListOil(auto));
         model.addAttribute("maintenanceWorkListGRM", autoService.getMaintenanceWorkListGRM(auto));
+        model.addAttribute("maintenanceWorkLastChangeOil", autoService.getMaintenanceWorkLastChangeOil(auto));
+        model.addAttribute("maintenanceWorkLastChangeGRM", autoService.getMaintenanceWorkLastChangeGRM(auto));
         model.addAttribute("maintenanceWorkOil", maintenanceWorkOil);
         model.addAttribute("maintenanceWorkGRM", maintenanceWorkGRM);
         return "maintenance-work";
@@ -145,7 +147,6 @@ public class AutoController {
     public String addMaintenanceWorkToAuto(@PathVariable("id") Long id,
                                            @ModelAttribute("maintenanceWorkOil") MaintenanceWork maintenanceWorkOil,
                                            @ModelAttribute("maintenanceWorkGRM") MaintenanceWork maintenanceWorkGRM,
-
                                            @ModelAttribute("auto") Auto auto, Model model) {
         model.addAttribute("auto", autoService.getAutoById(id));
 
