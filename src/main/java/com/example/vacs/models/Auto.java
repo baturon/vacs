@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -106,6 +103,7 @@ public class Auto {
     }
 
     public List<OtherWork> getOtherWorksList() {
+
         Collections.sort(otherWorksList, Comparator.comparing(OtherWork::getDateChange));
         return otherWorksList;
     }

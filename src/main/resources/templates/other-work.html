@@ -148,7 +148,7 @@
                                 <label for="mileage">Введите пробег </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
                                        th:field="*{mileageChange}" id="mileage"
-                                       th:min="0" th:max="999999" required placeholder="км"/>
+                                       th:min="0" th:max="${auto.mileage}" required placeholder="км"/>
                                 <span></span>
                                 <br>
                                 <!--                <input type="hidden" value="CHANGE_OIL" name='nameWork'>-->

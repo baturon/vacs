@@ -23,7 +23,7 @@ public abstract class Work {
 
     @Column(name = "dateChange")
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateChange;
 
     @Column(name = "comments")
