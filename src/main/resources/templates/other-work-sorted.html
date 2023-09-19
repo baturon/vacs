@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/scss/custom.scss" th:href="@{/scss/custom.scss}" rel="stylesheet"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Other work sorted by date</title>
+</head>
+<body th:style="'background: url(/img/background10.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
+
+<style>
+    input[type="number"]:invalid + span:after {
+        content: '';
+        padding-left: 5px;
+        color: red;
+    }
+
+    input[type="number"]:valid + span:after {
+        content: '✓';
+        padding-left: 5px;
+        color: green;
+    }
+
+
+    input[type="date"]:invalid + span:after {
+        content: '';
+        padding-left: 5px;
+        color: red;
+    }
+
+    input[type="date"]:valid + span:after {
+        content: '✓';
+        padding-left: 5px;
+        color: green;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
+
+
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#search").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+
+
+            $("#myTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
+
+<div class="container mb-3 align-items-center">
+
+    <!--    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
+    <!--          th:object="${maintenanceWork}">-->
+    <ul class="nav nav-underline" style="font-size: 1.1rem">
+        <li class="nav-item">
+            <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
+        </li>
+        <li class="nav-item">
+            <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+                авто </a>
+        </li>
+        <li class="nav-item">
+            <a style="color: white" class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с
+                повреждениями
+                авто</a>
+        </li>
+        <li class="nav-item">
+            <a style="color: white" class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные
+                работы </a>
+        </li>
+        <li class="nav-item">
+            <a style="color: darkgoldenrod" class="nav-link active" aria-current="page"
+               th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
+        </li>
+<!--        <li class="nav-item">-->
+<!--            <a style="color: white" class="nav-link" href="#">Документация </a>-->
+<!--        </li>-->
+    </ul>
+    <br>
+
+    <br>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <br>
+            <h5 class="card-title"
+                th:text="${'Ремонтные работы, проделанные с авто '+auto.brand+' '+auto.model
+                +' '+auto.licensePlate+' за период с '+ startDate+' по '+endDate}">
+                Auto</h5>
+
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover" id="myTable">
+                <thead>
+                <tr>
+                    <th scope="col">Наименоване работы</th>
+                    <th scope="col">Пробег</th>
+                    <th scope="col">Дата ремонта</th>
+                    <th scope="col">Стоимость ремонта</th>
+                    <th scope="col">Стоимость деталей</th>
+                    <th scope="col">Комментарии</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <input class="form-control" id="search" type="text" placeholder="Поиск...">
+                <br>
+                <tr th:each="mWork:${otherWorkListSortedByDate}">
+                    <td th:text="${mWork.nameWork}"></td>
+                    <td th:text="${mWork.mileageChange}"></td>
+                    <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${mWork.costWork}"></td>
+                    <td th:text="${mWork.costPart}"></td>
+                    <td th:text="${mWork.comments}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="modal fade" id="inputDatePeriodModal" role="dialog" tabindex="-1"
+             aria-labelledby="modalWindowsLabelInputDate"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalWindowsLabelInputDate">Сформировать отчет за период</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <form th:action="@{/autos/other-work-sorted/{id}(id=${auto.getId()})}">
+
+                        <div class="modal-body">
+
+                            <div>
+                                <label for="startDate">С </label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " name="startDate"
+                                       id="startDate" required/>
+                                <span></span>
+
+                                <label for="endDate">по </label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " name="endDate"
+                                       id="endDate" required/>
+                                <span></span>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Сформировать"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="card-footer">
+            <div style="display: inline-block">
+                <a class="btn btn-primary btn-sm m-lg-auto"
+                   th:href="@{/autos/other-work/{id}(id=${auto.getId()})}" role="button">Выйти из режима отчетности</a>
+                <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                        data-bs-target="#inputDatePeriodModal">Получить отчет за иной период
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
