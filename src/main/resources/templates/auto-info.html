@@ -44,7 +44,7 @@
 
 </style>
 <!--<body th:style="'background: url(/img/background3.jpg) no-repeat center center fixed ; background-size: cover;'">-->
-<body>
+<body th:style="'background: url(/img/background4.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
 <!--<script>-->
 
 <!--    // var myCarousel = document.querySelector('#myCarousel')-->
@@ -64,28 +64,24 @@
 <div class="container">
     </br>
     <ul class="nav nav-underline">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
+        <li class="nav-item align-items-center">
+            <a class="nav-link" style="color: white" th:href="@{/autos}">Ваши автомобили </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+            <a class="nav-link active" style="color: white" aria-current="page" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
                 авто </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями
+            <a class="nav-link" style="color: white" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями
                 авто</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
+            <a class="nav-link" style="color: white" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
+            <a class="nav-link" style="color: white" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Документация </a>
-        </li>
-
     </ul>
     <!--    <br>-->
     <!--    <br>-->
@@ -118,6 +114,48 @@
                     th:text="${'Пробег :  ' + auto.getMileage()}+' км'">
                     Mileage
                 </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:text="'Окончание страховки:  ' +${#temporals.format(auto.insuranceEndDate, 'dd-MM-yyyy')}" th:if="${auto.getInsuranceEndDate()>data} ">
+                    Mileage
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getInsuranceEndDate()==null}">
+                    <h6 style="color: black"  th:text="'Данные о дате окончания страховки отсутствуют. Обновите данные'"></h6>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getInsuranceEndDate()<data} and ${auto.getInsuranceEndDate()!=null}" style="color: red" th:text="'Страховка закончилась '+${#temporals.format(auto.insuranceEndDate,'dd-MM-yyyy')}+' !!!'">
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getInsuranceEndDate()==data} " style="color: red" th:text="'Сегодня ('+${#temporals.format(auto.insuranceEndDate,'dd-MM-yyyy')}+') последний день страховки !!!'">
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:text="'Окончание тех. осмотра:  ' +${#temporals.format(auto.dateCompletionTechnicalInspection,'dd-MM-yyyy')}"
+                    th:if="${auto.getDateCompletionTechnicalInspection()>data}">
+                    Mileage
+                </li>
+
+                <li  class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getDateCompletionTechnicalInspection()==null}">
+                    <h6 style="color: black" th:text="'Данные о дате окончания тех. осмотра отсутствуют. Обновите данные.'"></h6>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getDateCompletionTechnicalInspection()<data} and  ${auto.getDateCompletionTechnicalInspection()!=null}" style="color: red"
+                    th:text="'Тех. осмотр закончился '+${#temporals.format(auto.dateCompletionTechnicalInspection,'dd-MM-yyyy')}+' !!!'">
+                </li>
+
+                <li class="list-group-item d-flex align-items-center"
+                    th:if="${auto.getDateCompletionTechnicalInspection()==data} " style="color: red"
+                    th:text="'Сегодня ('+${#temporals.format(auto.dateCompletionTechnicalInspection,'dd-MM-yyyy')}+') последний день тех осмотра!!!'">
+                </li>
+
+
+
                 <li class="list-group-item d-flex align-items-center"
                     th:if="${maintenanceWorkLastChangeOil!=null} and ${maintenanceWorkLastChangeOil.mileageNextChange > auto.mileage}"
                     th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeOil.mileageNextChange - auto.mileage) +' км'}">
@@ -125,9 +163,9 @@
                 <li>
                     <div class="progress"
                          th:if="${maintenanceWorkLastChangeOil!=null} and ${maintenanceWorkLastChangeOil.mileageNextChange > auto.mileage}"
-                         style="height: 30px" role="progressbar" aria-label="Animated striped example" aria-valuemin="0"
+                         style="height: 20px" role="progressbar" aria-label="Animated striped example" aria-valuemin="0"
                          aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated overflow-visible text-dark "
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated overflow-visible text-dark "
                              style="height: auto"
                              th:style="'width: '+${(100)-(((maintenanceWorkLastChangeOil.mileageNextChange - auto.mileage)*100)/maintenanceWorkLastChangeOil.nextReplacementIn)}+'%'"
                              th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeOil.mileageNextChange - auto.mileage) +' км'}">
@@ -137,32 +175,37 @@
                 </li>
                 <li th:if="${maintenanceWorkLastChangeOil==null}">
                     <div class="list-group-item d-flex align-items-center">
-                        <h6 style="color: black" th:text="'Данных по замене масла нет'"></h6>
+                        <h6 style="color: black" th:text="'Данные по замене масла отсутствуют. Обновите данные в разделе &quot;Регламентные работы&quot;.'"></h6>
                     </div>
                 </li>
                 <li th:if="${maintenanceWorkLastChangeOil!=null}">
-                    <div  th:if="${maintenanceWorkLastChangeOil.mileageNextChange <auto.mileage} " class="list-group-item d-flex align-items-center">
-                        <h6 style="color: red" th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeOil.mileageNextChange}+' км'"></h6>
+                    <div th:if="${maintenanceWorkLastChangeOil.mileageNextChange <auto.mileage} "
+                         class="list-group-item d-flex align-items-center">
+                        <h6 style="color: red"
+                            th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeOil.mileageNextChange}+' км'"></h6>
                     </div>
                 </li>
                 <li th:if="${maintenanceWorkLastChangeOil!=null}">
-                    <div th:if="${maintenanceWorkLastChangeOil.mileageNextChange < auto.mileage}" class="progress" style="height: 30px" role="progressbar" aria-label="Danger striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" style="width: 100%"></div>
-                        </div>
+                    <div th:if="${maintenanceWorkLastChangeOil.mileageNextChange < auto.mileage}" class="progress"
+                         style="height: 20px" role="progressbar" aria-label="Danger striped example" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated"
+                             style="width: 100%"></div>
+                    </div>
                 </li>
 
                 <li class="list-group-item d-flex align-items-center"
-                    th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}">
-                    <h5 th:text="${'Замена ГРМ через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}"></h5>
+                    th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}"
+                    th:text="${'Замена ГРМ через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}">
                 </li>
 
                 <li>
                     <div class="progress"
                          th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}"
-                         style="height: 30px" role="progressbar" aria-label="Animated striped example" aria-valuemin="0"
+                         style="height: 20px" role="progressbar" aria-label="Animated striped example" aria-valuemin="0"
                          aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated overflow-visible text-dark "
-                             style="height: auto"
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated overflow-visible text-dark "
+                             style="height: 20px"
                              th:style="'width: '+${(100)-(((maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage)*100)/maintenanceWorkLastChangeGRM.nextReplacementIn)}+'%'"
                              th:text="${'Замена ГРМ через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}">
 
@@ -170,28 +213,61 @@
                     </div>
                 <li th:if="${maintenanceWorkLastChangeGRM==null}">
                     <div class="list-group-item d-flex align-items-center">
-                        <h6 style="color: black" th:text="'Данных по замене ГРМ нет'"></h6>
+                        <h6 style="color: black" th:text="'Данные по замене ГРМ отсутствуют. Обновите данные в разделе &quot;Регламентные работы&quot;.'"></h6>
                     </div>
                 </li>
 
                 </li>
                 <li th:if="${maintenanceWorkLastChangeGRM}!=null">
-                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange < auto.mileage}" class="list-group-item d-flex align-items-center">
-                        <h6 style="color: red" th:text="'Просрочили замену ГРМ на '+${auto.mileage -maintenanceWorkLastChangeGRM.mileageNextChange}+' км'"></h6>
+                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange < auto.mileage}"
+                         class="list-group-item d-flex align-items-center">
+                        <h6 style="color: red"
+                            th:text="'Просрочили замену ГРМ на '+${auto.mileage -maintenanceWorkLastChangeGRM.mileageNextChange}+' км'"></h6>
                     </div>
                 </li>
                 <li th:if="${maintenanceWorkLastChangeGRM}!=null">
-                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange < auto.mileage}"  class="progress" style="height: 30px" role="progressbar" aria-label="Danger striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" style="width: 100%"></div>
+                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange < auto.mileage}" class="progress"
+                         style="height: 20px" role="progressbar" aria-label="Danger striped example" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated"
+                             style="width: 100%"></div>
                     </div>
                 </li>
-
-                <br>
-                <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
-                        data-bs-target="#changeMileageModal">Обновить
-                    пробег
-                </button>
             </ul>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-auto align-items-center">
+                        <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                                data-bs-target="#changeMileageModal">Обновить
+                            пробег
+                        </button>
+                    </div>
+
+                    <div class="col-sm-auto align-items-center">
+                        <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                                data-bs-target="#changeDateEndInsurance">Обновить
+                            дату окончания страховки
+                        </button>
+                    </div>
+
+                    <div class="col-sm-auto align-items-center">
+                        <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                                data-bs-target="#changeDateCompletionTechnicalInspection">Обновить
+                            дату окончания тех. осмотра
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--                <div class="col-3">-->
+            <!--                <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"-->
+            <!--                        data-bs-target="#changeMileageModal">Обновить-->
+            <!--                    пробег-->
+            <!--                </button>-->
+            <!--                </div>-->
+
         </div>
     </div>
 
@@ -243,6 +319,66 @@
     <!--        modal.modal('hide');-->
     <!--    });-->
     <!--</script>-->
+    <div class="modal fade" id="changeDateCompletionTechnicalInspection" role="dialog" tabindex="-1" aria-labelledby="modalWindowsLabelChangeDateCompletionTechnicalInspection"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalWindowsLabelChangeDateCompletionTechnicalInspection">Обновление даты окончания страховки</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:method="POST" th:action="@{/autos/updateDateCompletionTechnicalInspection/auto/{id}(id=${auto.getId()})}"
+                          th:object="${auto}">
+                        <div class="mb-3">
+                            <label for="dateCompletionTechnicalInspection" class="col-form-label">Дата окончания страховки: </label>
+                            <input type="date" class="form-control" th:field="*{dateCompletionTechnicalInspection}" id="dateCompletionTechnicalInspection" required/>
+
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Обновить дату"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="changeDateEndInsurance" role="dialog" tabindex="-1" aria-labelledby="modalWindowsLabelChangeDateEndInsurance"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalWindowsLabelChangeDateEndInsurance">Обновление даты окончания страховки</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:method="POST" th:action="@{/autos/updateDateEndInsurance/auto/{id}(id=${auto.getId()})}"
+                          th:object="${auto}">
+                        <div class="mb-3">
+                            <label for="insuranceEndDate" class="col-form-label">Дата окончания страховки: </label>
+                            <input type="date" class="form-control" th:field="*{insuranceEndDate}" id="insuranceEndDate" required/>
+
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Обновить дату"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 
     <div class="modal fade" id="changeMileageModal" role="dialog" tabindex="-1" aria-labelledby="modalWindowsLabel"
@@ -254,7 +390,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:method="PATCH" th:action="@{/update/mileage/auto/{id}(id=${auto.getId()})}"
+                    <form th:method="PATCH" th:action="@{/autos/update/mileage/auto/{id}(id=${auto.getId()})}"
                           th:object="${auto}">
                         <div class="mb-3">
                             <label for="mileage" class="col-form-label">Пробег: </label>
@@ -290,7 +426,7 @@
 
     <!-- Button trigger modal -->
     <div class="d-grid gap-2 mb-3">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Удалить авто
         </button>
     </div>

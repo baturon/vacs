@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class AutoController {
     @GetMapping()
     public String autos(Model model) {
         model.addAttribute("autos", autoService.findAll());
+        model.addAttribute("data", LocalDate.now());
         return "autos";
     }
 
@@ -48,6 +50,8 @@ public class AutoController {
         model.addAttribute("maintenanceWorkLastChangeGRM", autoService.getMaintenanceWorkLastChangeGRM(auto));
         model.addAttribute("auto", auto);
         model.addAttribute("images", auto.getImages());
+        model.addAttribute("data", LocalDate.now());
+
         return "auto-info";
     }
 
@@ -175,6 +179,31 @@ public class AutoController {
         autoService.saveOtherWorkAuto(id, otherWork);
         return "redirect:/autos/other-work/{id}";
     }
+
+    @PatchMapping("/update/mileage/auto/{id}")
+    public String UpdateMileageAuto(@ModelAttribute("auto")  Auto auto,
+                                    @PathVariable("id") Long id) {
+
+        autoService.updateMileageAuto(id,auto);
+        return "redirect:/autos/{id}";
+    }
+
+    @PostMapping("/updateDateEndInsurance/auto/{id}")
+    public String updateDateEndInsurance(@ModelAttribute("auto")  Auto auto,
+                                    @PathVariable("id") Long id) {
+
+        autoService.updateDateEndInsurance(id,auto);
+        return "redirect:/autos/{id}";
+    }
+
+    @PostMapping("/updateDateCompletionTechnicalInspection/auto/{id}")
+    public String updateDateCompletionTechnicalInspection(@ModelAttribute("auto")  Auto auto,
+                                         @PathVariable("id") Long id) {
+
+        autoService.updateDateCompletionTechnicalInspection(id,auto);
+        return "redirect:/autos/{id}";
+    }
+
 
 
 }

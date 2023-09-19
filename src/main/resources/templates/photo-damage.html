@@ -34,62 +34,77 @@
 </style>
 
 
-<body>
+<body th:style="'background: url(/img/background3.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
 <div class="container">
-    <br>
-    <ul class="nav nav-underline">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по авто </a></li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-               th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями авто </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Документация </a>
-        </li>
-    </ul>
-    <br>
-    <h5 class="card-title" th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}" >Auto</h5>
     <br>
     <form th:method="PATCH" th:action="@{/autos/damagePhoto/add/{id}(id=${auto.getId()})}" th:object="${auto}"
           enctype="multipart/form-data">
-        <div class="thumb">
+        <ul class="nav nav-underline">
+            <li class="nav-item">
+                <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по авто </a></li>
+            <li class="nav-item">
+                <a style="color: white" class="nav-link active" aria-current="page"
+                   th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями авто </a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white" class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные
+                    работы </a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white" class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white" class="nav-link" href="#">Документация </a>
+            </li>
+        </ul>
+        <br>
+        <h5 class="card-title" style="color: white"
+            th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
+            Auto</h5>
+        <div class="card mb-3">
+            <br>
+            <br>
+
+            <div class="thumb">
             <span th:if="${auto.getImages().size()==1}">
-            <img class="opacity-25" th:src="@{/img/background1.jpg}" alt="" />
+            <img class="opacity-60" th:src="@{/img/background1.jpg}" alt=""/>
             </span>
-            <div class="row" th:unless="${auto.getImages().isEmpty()}" th:each="id,stat:${auto.getImages()}">
+                <div class="container">
+
+                    <div class="row" th:unless="${auto.getImages().isEmpty()}" th:each="id,stat:${auto.getImages()}">
 
 
-            <span th:unless="${auto.images.get(stat.index).isPreviewImage()}">
-            <img th:src="@{/images/{id}(id=${auto.images.get(stat.index).getId()})}"
-                 th:height="200" class="scale img-rounded" alt=""/>
-            <div class="text-muted mb-3"
-                    th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">date download
-            </div>
-            </span>
+                        <div th:unless="${auto.images.get(stat.index).isPreviewImage()}">
+                            <img class="scale img-rounded col-md-3"
+                                 th:src="@{/images/{id}(id=${auto.images.get(stat.index).getId()})}"
+                                 th:height="200" alt=""/>
+                            <div class="text-muted mb-3 col-md-3"
+                                 th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">date
+                                download
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <br>
             <br>
         </div>
-        <div class="text-muted mb-3">
-            <label for="formFile" class="form-label">Загрузите фото авто с повреждениями: </label>
-            <input class="form-control" name="photo" type="file" id="formFile" multiple/>
-            <!--                    <div class="invalid-feedback">Введите пробег</div>-->
-        </div>
+            <div class="text-muted mb-3">
+                <label style="color: white" for="formFile"  class="form-label">Загрузите фото авто с повреждениями: </label>
+                <input class="form-control" name="photo" type="file" id="formFile" multiple/>
+                <!--                    <div class="invalid-feedback">Введите пробег</div>-->
+            </div>
+
 
         <div class="d-grid gap-2 mb-3">
             <input class="btn btn-secondary" type="submit" value="Добавить фото"/>
         </div>
     </form>
+
 </div>
 
 </body>

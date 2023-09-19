@@ -16,7 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Other-work</title>
 </head>
-<body>
+<body th:style="'background: url(/img/background10.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
 
 <style>
     input[type="number"]:invalid + span:after {
@@ -54,6 +54,20 @@
 
 </style>
 
+<script>
+    $(document).ready(function () {
+        $("#search").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+
+
+            $("#myTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
+
 <div class="container mb-3 align-items-center">
 
     <br>
@@ -61,25 +75,27 @@
     <!--          th:object="${maintenanceWork}">-->
     <ul class="nav nav-underline">
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
+            <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+            <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
                 авто </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями
+            <a style="color: white" class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с
+                повреждениями
                 авто</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
+            <a style="color: white" class="nav-link" th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные
+                работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
+            <a style="color: white" class="nav-link active" aria-current="page"
                th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Документация </a>
+            <a style="color: white" class="nav-link" href="#">Документация </a>
         </li>
     </ul>
     <br>
@@ -89,12 +105,12 @@
     <div class="card text-center">
         <div class="card-header">
             <h5 class="card-title"
-                th:text="${'Ремонтные работы, проделанные с авто'+' '+auto.brand+' '+auto.model+' '+auto.licensePlate}">Auto</h5>
+                th:text="${'Ремонтные работы, проделанные с авто'+' '+auto.brand+' '+auto.model+' '+auto.licensePlate}">
+                Auto</h5>
+
         </div>
         <div class="card-body">
-            <!--            <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
-            <!--                  th:object="${maintenanceWorkOil}">-->
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="myTable">
                 <thead>
                 <tr>
                     <th scope="col">Наименоване работы</th>
@@ -107,10 +123,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                <input class="form-control" id="search" type="text" placeholder="Поиск...">
+                <br>
                 <tr th:each="mWork:${otherWorkList}">
                     <td th:text="${mWork.nameWork}"></td>
                     <td th:text="${mWork.mileageChange}"></td>
-                    <td th:text="${mWork.dateChange}"></td>
+                    <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
                     <td th:text="${mWork.costWork}"></td>
                     <td th:text="${mWork.costPart}"></td>
                     <td th:text="${mWork.comments}"></td>
@@ -142,12 +160,12 @@
                                 <label for="nameWork">Наименование </label>
                                 <input type="text" class="form-control mb-3 w-auto  d-inline-flex"
                                        th:field="*{nameWork}" id="nameWork"
-                                       required placeholder="Замена чего то...."/>
+                                       required placeholder="Замена или ремонт чего то...."/>
                                 <span></span>
                                 <br>
                                 <label for="mileage">Введите пробег </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
-                                       th:field="*{mileageChange}" id="mileage"
+                                       name="mileageChange" id="mileage"
                                        th:min="0" th:max="${auto.mileage}" required placeholder="км"/>
                                 <span></span>
                                 <br>
@@ -156,19 +174,19 @@
 
                                 <label for="dateWork">Введите дату </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
-                                       placeholder=" " th:field="*{dateChange}"
+                                       placeholder=" " name="dateChange"
                                        id="dateWork" required/>
                                 <span></span>
                                 <br>
                                 <label for="costWork">Стоимость работы </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
-                                       th:field="*{costWork}" id="costWork"
+                                       name="costWork" id="costWork"
                                        th:min="0" required placeholder="BYN"/>
                                 <span></span>
                                 <br>
                                 <label for="costPart">Стоимость деталей </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline"
-                                       th:field="*{costPart}" id="costPart"
+                                       name="costPart" id="costPart"
                                        th:min="0" required placeholder="BYN"/>
                                 <span></span>
                                 <br>
@@ -189,8 +207,8 @@
             </div>
         </div>
 
-        <div class="card-footer text-muted">
-            2 дня спустя
+        <div class="card-footer">
+            <h5 th:text="' '"></h5>
         </div>
     </div>
 </div>

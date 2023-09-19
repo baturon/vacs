@@ -16,7 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Maintenance-work</title>
 </head>
-<body>
+<body th:style="'background: url(/img/background9.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
 
 <style>
     input[type="number"]:invalid + span:after {
@@ -65,38 +65,37 @@
     <!--          th:object="${maintenanceWork}">-->
     <ul class="nav nav-underline">
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
+            <a style="color: white"  class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+            <a style="color: white"  class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
                 авто </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями
+            <a style="color: white"  class="nav-link" th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями
                 авто</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
+            <a style="color: white"  class="nav-link active" aria-current="page"
                th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
+            <a style="color: white"  class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Документация </a>
+            <a style="color: white"  class="nav-link" href="#">Документация </a>
         </li>
     </ul>
     <br>
 
-    <h5 class="card-title"
+    <h5  style="color: white"  class="card-title"
         th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">Auto</h5>
     <br>
 
     <div class="card text-center">
         <div class="card-header" th:text="${maintenanceWorkOil.nameWork.title}"></div>
+
         <div class="card-body">
-            <!--            <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
-            <!--                  th:object="${maintenanceWorkOil}">-->
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
@@ -111,7 +110,7 @@
                 <tr th:each="mWork:${maintenanceWorkListOil}">
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${mWork.mileageNextChange}"></td>
-                    <td th:text="${mWork.dateChange}"></td>
+                    <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
                     <td th:text="${mWork.comments}"></td>
                 </tr>
                 </tbody>
@@ -141,8 +140,8 @@
 
                                 <label for="mileageChange">Введите пробег замены масла </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
-                                       th:field="*{mileageChange}" id="mileageChange"
-                                       th:min="0" th:max="${auto.mileage}" required placeholder="км"  />
+                                       name="mileageChange" id="mileageChange"
+                                       th:min="0" th:max="${auto.mileage}" required placeholder="км"/>
                                 <span></span>
 
                                 <input type="hidden" value="CHANGE_OIL" name='nameWork'>
@@ -151,7 +150,7 @@
                                     масла</label>
                                 <input type="number" placeholder="км" value=""
                                        class="form-control mb-3 w-auto d-inline-flex"
-                                       th:field="*{nextReplacementIn}" id="mileageNextChangeOil" th:min="0"
+                                       name="nextReplacementIn" id="mileageNextChangeOil" th:min="0"
                                        th:max="999999"
                                        required/>
                                 <span></span>
@@ -225,7 +224,7 @@
                     <!--                    th:if="${mWork.nameWork==maintenanceWorkOil.nameWork.CHANGE_GRM}">-->
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${mWork.mileageNextChange}"></td>
-                    <td th:text="${mWork.dateChange}"></td>
+                    <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
                     <td th:text="${mWork.comments}"></td>
                 </tr>
                 </tbody>
@@ -255,7 +254,7 @@
 
                                 <label for="mileageChangeGRM">Введите пробег замены ГРМ </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
-                                       th:field="*{mileageChange}" id="mileageChangeGRM"
+                                       name="mileageChange" id="mileageChangeGRM"
                                        th:min="0" th:max="${auto.mileage}" required placeholder="км"/>
                                 <span></span>
 
@@ -265,7 +264,7 @@
                                     ГРМ</label>
                                 <input type="number" placeholder="км" value=""
                                        class="form-control mb-3 w-auto d-inline-flex"
-                                       th:field="*{nextReplacementIn}" id="mileageNextChange" th:min="0" th:max="999999"
+                                       name="nextReplacementIn" id="mileageNextChange" th:min="0" th:max="999999"
                                        required/>
                                 <span></span>
                                 <br>
@@ -295,26 +294,24 @@
 
 
         <div class="card-footer text-muted">
-            <div class="card-footer text-muted">
-                <li class="list-group-item d-flex align-items-center"
-                    th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}"
-                    th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}">
-                </li>
+            <li class="list-group-item d-flex align-items-center"
+                th:if="${maintenanceWorkLastChangeGRM!=null} and ${maintenanceWorkLastChangeGRM.mileageNextChange > auto.mileage}"
+                th:text="${'Замена масла через :  ' + (maintenanceWorkLastChangeGRM.mileageNextChange - auto.mileage) +' км'}">
+            </li>
 
-                <li th:if="${maintenanceWorkLastChangeGRM==null}">
-                    <div class="list-group-item d-flex align-items-center">
-                        <h6 style="color: black" th:text="'Данных по замене масла нет'"></h6>
-                    </div>
-                </li>
-                <li th:if="${maintenanceWorkLastChangeGRM!=null}">
-                    <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange <auto.mileage} "
-                         class="list-group-item d-flex align-items-center">
-                        <h6 style="color: red"
-                            th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeGRM.mileageNextChange}+' км'"></h6>
-                    </div>
-                </li>
+            <li th:if="${maintenanceWorkLastChangeGRM==null}">
+                <div class="list-group-item d-flex align-items-center">
+                    <h6 style="color: black" th:text="'Данных по замене ГРМ нет'"></h6>
+                </div>
+            </li>
+            <li th:if="${maintenanceWorkLastChangeGRM!=null}">
+                <div th:if="${maintenanceWorkLastChangeGRM.mileageNextChange <auto.mileage} "
+                     class="list-group-item d-flex align-items-center">
+                    <h6 style="color: red"
+                        th:text="'Просрочили замену масла на '+${auto.mileage -maintenanceWorkLastChangeGRM.mileageNextChange}+' км'"></h6>
+                </div>
+            </li>
 
-            </div>
         </div>
     </div>
 </div>

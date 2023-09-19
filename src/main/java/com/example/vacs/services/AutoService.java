@@ -181,4 +181,24 @@ public class AutoService {
         auto.addOtherWorkToAuto(otherWork);
         autoRepository.save(auto);
     }
+
+    @Transactional
+    public void updateDateEndInsurance(Long id, Auto updatedAuto) {
+        Auto auto;
+        auto = autoRepository.findById(id).get();
+        auto.setInsuranceEndDate(updatedAuto.getInsuranceEndDate());
+        auto.setId(id);
+        autoRepository.save(auto);
+    }
+
+
+    @Transactional
+    public void updateDateCompletionTechnicalInspection(Long id, Auto updatedAuto) {
+        Auto auto;
+        auto = autoRepository.findById(id).get();
+        auto.setDateCompletionTechnicalInspection(updatedAuto.getDateCompletionTechnicalInspection());
+        auto.setId(id);
+        autoRepository.save(auto);
+    }
+
 }

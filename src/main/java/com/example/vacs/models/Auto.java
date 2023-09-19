@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -54,6 +56,15 @@ public class Auto {
     @Column(name = "mileage")
     private int mileage;
 
+    @Column(name = "insurance_end_date")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate insuranceEndDate;
+
+    @Column(name = "date_completion_technical_inspection")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateCompletionTechnicalInspection;
 
 
 //    @OneToOne(fetch = FetchType.LAZY,mappedBy = "auto")
