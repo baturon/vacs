@@ -10,8 +10,10 @@ import com.example.vacs.models.OtherWork;
 import com.example.vacs.services.AutoService;
 
 import com.example.vacs.services.FirmService;
+import com.example.vacs.services.OtherWorkService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +39,8 @@ public class AutoController {
     private final AutoService autoService;
 
     private final FirmService firmService;
+
+    private final OtherWorkService otherWorkService;
 
     @GetMapping()
     public String autos(Model model) {
@@ -161,13 +168,27 @@ public class AutoController {
     @GetMapping("/other-work/{id}")
     public String otherWork(@PathVariable("id") Long id, Model model) {
         Auto auto = autoService.getAutoById(id);
-
-
         model.addAttribute("auto", auto);
         model.addAttribute("otherWorkList", auto.getOtherWorksList());
         model.addAttribute("otherWork", new OtherWork());
+        model.addAttribute("startDate", new Date());
+        model.addAttribute("endDate", new Date());
 
         return "other-work";
+    }
+
+    @GetMapping("/other-work-sorted/{id}")
+    public String otherWorkSortedByDate(@RequestParam("startDate") String startDate,
+                                                      @RequestParam("endDate") String endDate,
+                                        @PathVariable("id") Long id, Model model) throws ParseException {
+        Auto auto = autoService.getAutoById(id);
+        model.addAttribute("auto", auto);
+        model.addAttribute("otherWorkListSortedByDate",
+                otherWorkService.getSortedListOtherWorkByDate(auto, startDate, endDate));
+
+        model.addAttribute("startDate", LocalDate.parse(startDate));
+        model.addAttribute("endDate", LocalDate.parse(endDate));
+        return "other-work-sorted";
     }
 
     @PostMapping("/create/other-work/{id}")
@@ -181,29 +202,28 @@ public class AutoController {
     }
 
     @PatchMapping("/update/mileage/auto/{id}")
-    public String UpdateMileageAuto(@ModelAttribute("auto")  Auto auto,
+    public String UpdateMileageAuto(@ModelAttribute("auto") Auto auto,
                                     @PathVariable("id") Long id) {
 
-        autoService.updateMileageAuto(id,auto);
+        autoService.updateMileageAuto(id, auto);
         return "redirect:/autos/{id}";
     }
 
     @PostMapping("/updateDateEndInsurance/auto/{id}")
-    public String updateDateEndInsurance(@ModelAttribute("auto")  Auto auto,
-                                    @PathVariable("id") Long id) {
+    public String updateDateEndInsurance(@ModelAttribute("auto") Auto auto,
+                                         @PathVariable("id") Long id) {
 
-        autoService.updateDateEndInsurance(id,auto);
+        autoService.updateDateEndInsurance(id, auto);
         return "redirect:/autos/{id}";
     }
 
     @PostMapping("/updateDateCompletionTechnicalInspection/auto/{id}")
-    public String updateDateCompletionTechnicalInspection(@ModelAttribute("auto")  Auto auto,
-                                         @PathVariable("id") Long id) {
+    public String updateDateCompletionTechnicalInspection(@ModelAttribute("auto") Auto auto,
+                                                          @PathVariable("id") Long id) {
 
-        autoService.updateDateCompletionTechnicalInspection(id,auto);
+        autoService.updateDateCompletionTechnicalInspection(id, auto);
         return "redirect:/autos/{id}";
     }
-
 
 
 }

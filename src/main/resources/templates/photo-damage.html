@@ -34,19 +34,18 @@
 </style>
 
 
-<body th:style="'background: url(/img/background3.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
+<body th:style="'background: url(/img/background12.jpg) no-repeat center center fixed ; background-size: cover;opacity: .919'">
 <div class="container">
-    <br>
     <form th:method="PATCH" th:action="@{/autos/damagePhoto/add/{id}(id=${auto.getId()})}" th:object="${auto}"
           enctype="multipart/form-data">
-        <ul class="nav nav-underline">
+        <ul class="nav nav-underline" style="font-size: 1.1rem">
             <li class="nav-item">
                 <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
             </li>
             <li class="nav-item">
                 <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по авто </a></li>
             <li class="nav-item">
-                <a style="color: white" class="nav-link active" aria-current="page"
+                <a style="color: red" class="nav-link active" aria-current="page"
                    th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями авто </a>
             </li>
             <li class="nav-item">
@@ -56,9 +55,9 @@
             <li class="nav-item">
                 <a style="color: white" class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
             </li>
-            <li class="nav-item">
-                <a style="color: white" class="nav-link" href="#">Документация </a>
-            </li>
+<!--            <li class="nav-item">-->
+<!--                <a style="color: white" class="nav-link" href="#">Документация </a>-->
+<!--            </li>-->
         </ul>
         <br>
         <h5 class="card-title" style="color: white"

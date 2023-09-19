@@ -43,8 +43,8 @@
         <h7 style="color: white ">Введите данные для поиска транспортного средства в вашем списке:</h7>
         <br>
         <input class="form-control" id="myInput" type="text" placeholder="Поиск...">
-        <br>
-        <a th:unless="${autos.isEmpty()}" class="list-group-item " href="/autos/new">Добавить новый авто... </a>
+<!--        <br>-->
+<!--        <a th:unless="${autos.isEmpty()}" class="list-group-item " href="/autos/new">Добавить новый авто... </a>-->
         <br/>
         <a th:if="${autos.isEmpty()}" class="list-group-item " href="/autos/new">Добавить ваш первый авто... </a>
 
@@ -133,7 +133,8 @@
         </div>
 
 
-        <br/>
+        <br>
+        <a th:unless="${autos.isEmpty()}" class="list-group-item " href="/autos/new">Добавить новый авто... </a>
     </ul>
 </div>
 

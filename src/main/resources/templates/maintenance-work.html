@@ -60,10 +60,9 @@
 
 <div class="container mb-3 align-items-center">
 
-    <br>
     <!--    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
     <!--          th:object="${maintenanceWork}">-->
-    <ul class="nav nav-underline">
+    <ul class="nav nav-underline" style="font-size: 1.1rem">
         <li class="nav-item">
             <a style="color: white"  class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
         </li>
@@ -76,15 +75,15 @@
                 авто</a>
         </li>
         <li class="nav-item">
-            <a style="color: white"  class="nav-link active" aria-current="page"
+            <a style="color: #b37400"  class="nav-link active" aria-current="page"
                th:href="@{/autos/maintenance-work/{id}(id=${auto.getId()})}">Регламентные работы </a>
         </li>
         <li class="nav-item">
             <a style="color: white"  class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
-        <li class="nav-item">
-            <a style="color: white"  class="nav-link" href="#">Документация </a>
-        </li>
+<!--        <li class="nav-item">-->
+<!--            <a style="color: white"  class="nav-link" href="#">Документация </a>-->
+<!--        </li>-->
     </ul>
     <br>
 
@@ -230,7 +229,7 @@
                 </tbody>
             </table>
 
-            <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary btn-sm m-lg-auto " data-bs-toggle="modal"
                     data-bs-target="#dataChangeGRMModal">Обновить данные замены ГРМ
             </button>
 

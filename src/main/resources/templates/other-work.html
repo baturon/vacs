@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,7 +62,7 @@
 
 
             $("#myTable tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
     });
@@ -70,10 +71,9 @@
 
 <div class="container mb-3 align-items-center">
 
-    <br>
     <!--    <form th:method="POST" th:action="@{/autos/create/maintenance-work/{id}(id=${auto.getId()})}"-->
     <!--          th:object="${maintenanceWork}">-->
-    <ul class="nav nav-underline">
+    <ul class="nav nav-underline" style="font-size: 1.1rem">
         <li class="nav-item">
             <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
         </li>
@@ -91,12 +91,12 @@
                 работы </a>
         </li>
         <li class="nav-item">
-            <a style="color: white" class="nav-link active" aria-current="page"
+            <a style="color: darkgoldenrod" class="nav-link active" aria-current="page"
                th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
-        <li class="nav-item">
-            <a style="color: white" class="nav-link" href="#">Документация </a>
-        </li>
+<!--        <li class="nav-item">-->
+<!--            <a style="color: white" class="nav-link" href="#">Документация </a>-->
+<!--        </li>-->
     </ul>
     <br>
 
@@ -136,9 +136,6 @@
                 </tbody>
             </table>
 
-            <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
-                    data-bs-target="#dataChangeOilModal">Ввести данные по ремонту
-            </button>
 
         </div>
 
@@ -206,11 +203,59 @@
                 </div>
             </div>
         </div>
-
         <div class="card-footer">
-            <h5 th:text="' '"></h5>
+
+
+            <div style="display: inline-block">
+            <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                    data-bs-target="#dataChangeOilModal">Ввести данные по ремонту
+            </button>
+                <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                        data-bs-target="#inputDatePeriodModal">Получить отчет за период
+                </button>
+            </div>
+        </div>
+
+        <!--Modal-->
+        <div class="modal fade" id="inputDatePeriodModal" role="dialog" tabindex="-1"
+             aria-labelledby="modalWindowsLabelInputDate"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalWindowsLabelInputDate">Сформировать отчет за период</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <form th:action="@{/autos/other-work-sorted/{id}(id=${auto.getId()})}">
+
+                        <div class="modal-body">
+
+                            <div>
+                                <label for="startDate">С </label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " name="startDate"
+                                       id="startDate" required/>
+                                <span></span>
+
+                                <label for="endDate">по </label>
+                                <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
+                                       placeholder=" " name="endDate"
+                                       id="endDate" required/>
+                                <span></span>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Сформировать"/>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

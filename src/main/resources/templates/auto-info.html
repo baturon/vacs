@@ -62,13 +62,12 @@
 <!--    );-->
 <!--</script>-->
 <div class="container">
-    </br>
-    <ul class="nav nav-underline">
+    <ul class="nav nav-underline" style="font-size: 1.1rem">
         <li class="nav-item align-items-center">
             <a class="nav-link" style="color: white" th:href="@{/autos}">Ваши автомобили </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" style="color: white" aria-current="page" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+            <a class="nav-link active" style="color: greenyellow" aria-current="page" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
                 авто </a>
         </li>
         <li class="nav-item">
@@ -97,7 +96,7 @@
 
         <div class="card-body">
             <h5 class="card-title" th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()}">Заголовок карточки</h5>
-            <ul class="list-group ">
+            <ul class="list-group " style="font-size: 1.1rem">
                 <!--                <li class="list-group-item" th:text="${'Марка: ' + auto.getBrand() }">Brand</li>-->
                 <!--                <li class="list-group-item" th:text="${'Модель: ' + auto.getModel()}">Model</li>-->
                 <li class="list-group-item d-flex align-items-center"
