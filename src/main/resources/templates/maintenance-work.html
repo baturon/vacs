@@ -157,7 +157,7 @@
                                 <label for="dateChangeOil">Введите дату замены масла</label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " th:field="*{dateChange}"
-                                       id="dateChangeOil" required/>
+                                       id="dateChangeOil" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                                 <div class="form-floating">
@@ -270,7 +270,7 @@
                                 <label for="dateChange">Введите дату замены ГРМ</label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " th:field="*{dateChange}"
-                                       id="dateChange" required/>
+                                       id="dateChange" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                                 <div class="form-floating">

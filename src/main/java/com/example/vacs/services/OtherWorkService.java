@@ -23,11 +23,17 @@ public class OtherWorkService {
     private final AutoRepository autoRepository;
 
 
-    public List<OtherWork> getSortedListOtherWorkByDate(Auto auto,String startDateStr, String endDateStr) throws ParseException {
-        LocalDate startDate=LocalDate.parse(startDateStr);
-        LocalDate endDate=LocalDate.parse(endDateStr);
-        List<OtherWork> otherWorkListSorted=otherWorkRepository.findByAutoAndDateChangeBetween(auto, startDate, endDate);
-        Collections.sort(otherWorkListSorted,Comparator.comparing(OtherWork::getDateChange));
+    public List<OtherWork> getSortedListOtherWorkByDate(Auto auto, String startDateStr, String endDateStr) throws ParseException {
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
+        if (endDate.isBefore(startDate)) {
+            LocalDate date=endDate;
+            endDate = startDate;
+            startDate=date;
+        }
+
+        List<OtherWork> otherWorkListSorted = otherWorkRepository.findByAutoAndDateChangeBetween(auto, startDate, endDate);
+        Collections.sort(otherWorkListSorted, Comparator.comparing(OtherWork::getDateChange));
         return otherWorkListSorted;
     }
 }

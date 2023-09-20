@@ -151,6 +151,8 @@ public class AutoController {
         model.addAttribute("maintenanceWorkLastChangeGRM", autoService.getMaintenanceWorkLastChangeGRM(auto));
         model.addAttribute("maintenanceWorkOil", maintenanceWorkOil);
         model.addAttribute("maintenanceWorkGRM", maintenanceWorkGRM);
+        model.addAttribute("localDateNow", LocalDate.now());
+
         return "maintenance-work";
     }
 
@@ -173,21 +175,31 @@ public class AutoController {
         model.addAttribute("otherWork", new OtherWork());
         model.addAttribute("startDate", new Date());
         model.addAttribute("endDate", new Date());
+        model.addAttribute("localDateNow", LocalDate.now());
 
         return "other-work";
     }
 
     @GetMapping("/other-work-sorted/{id}")
-    public String otherWorkSortedByDate(@RequestParam("startDate") String startDate,
-                                                      @RequestParam("endDate") String endDate,
+    public String otherWorkSortedByDate(@RequestParam("startDate") String startDateString,
+                                        @RequestParam("endDate") String endDateString,
                                         @PathVariable("id") Long id, Model model) throws ParseException {
         Auto auto = autoService.getAutoById(id);
         model.addAttribute("auto", auto);
         model.addAttribute("otherWorkListSortedByDate",
-                otherWorkService.getSortedListOtherWorkByDate(auto, startDate, endDate));
+                otherWorkService.getSortedListOtherWorkByDate(auto, startDateString, endDateString));
+        LocalDate startDate = LocalDate.parse(startDateString);
+        LocalDate endDate = LocalDate.parse(endDateString);
 
-        model.addAttribute("startDate", LocalDate.parse(startDate));
-        model.addAttribute("endDate", LocalDate.parse(endDate));
+        if (endDate.isBefore(startDate)) {
+            LocalDate date = endDate;
+            endDate = startDate;
+            startDate = date;
+        }
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("localDateNow", LocalDate.now());
         return "other-work-sorted";
     }
 

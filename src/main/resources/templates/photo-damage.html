@@ -60,16 +60,17 @@
 <!--            </li>-->
         </ul>
         <br>
-        <h5 class="card-title" style="color: white"
-            th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
-            Auto</h5>
-        <div class="card mb-3">
+
+        <div class="card mb-3 row">
             <br>
+            <h5 class="card-title justify-content-center" style="color: black; font-size: 1.4rem"
+                th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
+                Auto</h5>
             <br>
 
             <div class="thumb">
             <span th:if="${auto.getImages().size()==1}">
-            <img class="opacity-60" th:src="@{/img/background1.jpg}" alt=""/>
+            <img class="bg-opacity-10" width="400" th:src="@{/img/background12.jpg}" alt=""/>
             </span>
                 <div class="container">
 

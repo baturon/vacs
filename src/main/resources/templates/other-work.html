@@ -45,6 +45,19 @@
         color: green;
     }
 
+
+    input[type="text"]:invalid + span:after {
+        content: '';
+        padding-left: 5px;
+        color: red;
+    }
+
+    input[type="text"]:valid + span:after {
+        content: '✓';
+        padding-left: 5px;
+        color: green;
+    }
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -172,20 +185,18 @@
                                 <label for="dateWork">Введите дату </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " name="dateChange"
-                                       id="dateWork" required/>
+                                       id="dateWork" th:attr="max=${localDateNow}"  required/>
                                 <span></span>
                                 <br>
                                 <label for="costWork">Стоимость работы </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline-flex"
                                        name="costWork" id="costWork"
-                                       th:min="0" required placeholder="BYN"/>
-                                <span></span>
+                                       th:min="0"  placeholder="BYN"/>
                                 <br>
                                 <label for="costPart">Стоимость деталей </label>
                                 <input type="number" class="form-control mb-3 w-auto  d-inline"
                                        name="costPart" id="costPart"
-                                       th:min="0" required placeholder="BYN"/>
-                                <span></span>
+                                       th:min="0"  placeholder="BYN" />
                                 <br>
                                 <div class="form-floating">
                                     <textarea th:field="*{comments}" class="form-control" placeholder="Комментарии"
@@ -234,13 +245,13 @@
                                 <label for="startDate">С </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " name="startDate"
-                                       id="startDate" required/>
+                                       id="startDate" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                                 <label for="endDate">по </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " name="endDate"
-                                       id="endDate" required/>
+                                       id="endDate" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                             </div>

@@ -14,10 +14,10 @@ public class OtherWork extends Work {
     private String nameWork;
 
     @Column(name = "cost_part")
-    private int costPart;
+    private Integer costPart;
 
     @Column(name = "cost_work")
-    private int costWork;
+    private Integer costWork;
 
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

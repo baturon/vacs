@@ -119,7 +119,7 @@
                     <th scope="col">Дата ремонта</th>
                     <th scope="col">Стоимость ремонта</th>
                     <th scope="col">Стоимость деталей</th>
-                    <th scope="col">Комментарии</th>
+                    <th scope="col">Итоговая стоимость ремонта</th>
 
                 </tr>
                 </thead>
@@ -132,7 +132,7 @@
                     <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
                     <td th:text="${mWork.costWork}"></td>
                     <td th:text="${mWork.costPart}"></td>
-                    <td th:text="${mWork.comments}"></td>
+                    <td th:text="${mWork.costWork}+${mWork.costPart}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -156,13 +156,13 @@
                                 <label for="startDate">С </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " name="startDate"
-                                       id="startDate" required/>
+                                       id="startDate" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                                 <label for="endDate">по </label>
                                 <input type="date" class="form-control text-muted mb-3 w-auto d-inline-flex "
                                        placeholder=" " name="endDate"
-                                       id="endDate" required/>
+                                       id="endDate" th:attr="max=${localDateNow}" required/>
                                 <span></span>
 
                             </div>
