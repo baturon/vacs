@@ -13,6 +13,7 @@ import com.example.vacs.services.FirmService;
 import com.example.vacs.services.OtherWorkService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.convert.spi.AutoApplicableConverterDescriptor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +46,7 @@ public class AutoController {
     @GetMapping()
     public String autos(Model model) {
         model.addAttribute("autos", autoService.findAll());
-        model.addAttribute("data", LocalDate.now());
+        model.addAttribute("dateNow", LocalDate.now());
         return "autos";
     }
 
@@ -57,8 +58,7 @@ public class AutoController {
         model.addAttribute("maintenanceWorkLastChangeGRM", autoService.getMaintenanceWorkLastChangeGRM(auto));
         model.addAttribute("auto", auto);
         model.addAttribute("images", auto.getImages());
-        model.addAttribute("data", LocalDate.now());
-
+        model.addAttribute("date", LocalDate.now());
         return "auto-info";
     }
 
@@ -68,27 +68,23 @@ public class AutoController {
 
 
         model.addAttribute("firms", firmService.getFirmsList());
-//        model.addAttribute("models", modelService.getModelByFirmId());
         model.addAttribute("auto", new Auto());
         List<Integer> listYears = new ArrayList<>();
         for (int i = LocalDateTime.now().getYear(); i >= 1960; i--) {
             listYears.add(i);
         }
-
         model.addAttribute("years", listYears);
-
         return "new";
     }
 
 
     @PostMapping("/create/auto")
     public String createAuto(Model model, @ModelAttribute("auto") @Valid Auto auto, BindingResult bindingResult,
-                             @RequestParam("photo") MultipartFile[] files)
-            throws IOException {
+                             @RequestParam("photo") MultipartFile file) throws IOException {
         if (bindingResult.hasErrors())
-            return "/new";
+            return "redirect:/autos/new";
         model.addAttribute("auto", autoService.findAll());
-        autoService.saveAuto(auto, files);
+        autoService.saveAuto(auto, file);
         return "redirect:/autos";
     }
 
@@ -124,7 +120,7 @@ public class AutoController {
         Auto auto = autoService.getAutoById(id);
 
         model.addAttribute("auto", auto);
-        model.addAttribute("images", auto.getImages());
+        model.addAttribute("listPhotosDamage",  auto.getImages());
         return "photo-damage";
     }
 
@@ -162,7 +158,6 @@ public class AutoController {
                                            @ModelAttribute("maintenanceWorkGRM") MaintenanceWork maintenanceWorkGRM,
                                            @ModelAttribute("auto") Auto auto, Model model) {
         model.addAttribute("auto", autoService.getAutoById(id));
-
         autoService.saveMaintenanceWorkAuto(id, maintenanceWorkOil);
         return "redirect:/autos/maintenance-work/{id}";
     }
@@ -200,6 +195,7 @@ public class AutoController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("localDateNow", LocalDate.now());
+        model.addAttribute("totalAmount", otherWorkService.getTotalAmount(otherWorkService.getSortedListOtherWorkByDate(auto, startDateString, endDateString)));
         return "other-work-sorted";
     }
 
@@ -208,6 +204,7 @@ public class AutoController {
                                      @ModelAttribute("otherWork") OtherWork otherWork,
                                      @ModelAttribute("auto") Auto auto, Model model) {
         model.addAttribute("auto", autoService.getAutoById(id));
+        System.out.println(otherWork.getCostWork());
 
         autoService.saveOtherWorkAuto(id, otherWork);
         return "redirect:/autos/other-work/{id}";
@@ -216,7 +213,7 @@ public class AutoController {
     @PatchMapping("/update/mileage/auto/{id}")
     public String UpdateMileageAuto(@ModelAttribute("auto") Auto auto,
                                     @PathVariable("id") Long id) {
-
+        System.out.println(auto.getDaysReminderChangeMileage());
         autoService.updateMileageAuto(id, auto);
         return "redirect:/autos/{id}";
     }
@@ -236,6 +233,14 @@ public class AutoController {
         autoService.updateDateCompletionTechnicalInspection(id, auto);
         return "redirect:/autos/{id}";
     }
+
+//    @PutMapping("/photoProfile/add/{id}")
+//    public String addMaintenanceWorkToAuto(@PathVariable("id") Long id,
+//                                           @RequestParam("photo") MultipartFile file) throws IOException {
+//        Auto auto = autoService.getAutoById(id);
+//        autoService.updatePhotoProfile(file, auto);
+//        return "redirect:/autos/{id}";
+//    }
 
 
 }

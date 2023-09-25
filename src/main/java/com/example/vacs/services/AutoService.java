@@ -4,6 +4,7 @@ import com.example.vacs.models.*;
 import com.example.vacs.repositories.AutoRepository;
 
 
+import com.example.vacs.repositories.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,24 +31,19 @@ public class AutoService {
         return autoRepository.findAll();
     }
 
-    @Transactional
-    public void saveAuto(Auto auto, MultipartFile[] files) throws IOException {
 
-//        int count = 0;
+
+    @Transactional
+    public void saveAuto(Auto auto, MultipartFile file) throws IOException {
         List<Image> images = new ArrayList<>();
 
-
-        for (MultipartFile file : files) {
-            if (file.getSize() != 0) {
-                Image image = imagesToEntity(file);
-
-                images.add(image);
-                images.get(0).setPreviewImage(true);
-                auto.addImageToAuto(image);
-//                count ++;
-            }
+        if (file.getSize() != 0) {
+            Image image = imagesToEntity(file);
+            images.add(image);
+            images.get(0).setPreviewImage(true);
+            auto.addImageToAuto(image);
         }
-
+        auto.setDateChangeMileage(LocalDate.now());
         autoRepository.save(auto);
 
     }
@@ -84,8 +80,11 @@ public class AutoService {
     @Transactional
     public void updateMileageAuto(Long id, Auto updatedAuto) {
         Auto auto;
+
         auto = autoRepository.findById(id).get();
+        auto.setDateChangeMileage(LocalDate.now());
         auto.setMileage(updatedAuto.getMileage());
+        auto.setDaysReminderChangeMileage(updatedAuto.getDaysReminderChangeMileage());
 //        auto.setId(id);
 
         autoRepository.save(auto);
@@ -176,6 +175,12 @@ public class AutoService {
     public void saveOtherWorkAuto(Long id, OtherWork otherWork) {
         Auto auto = autoRepository.findById(id).get();
         List<OtherWork> otherWorksList = auto.getOtherWorksList();
+        if (otherWork.getCostWork() == null) {
+            otherWork.setCostWork(0);
+        }
+        if (otherWork.getCostPart() == null) {
+            otherWork.setCostPart(0);
+        }
         otherWorksList.add(otherWork);
         auto.setId(id);
         auto.addOtherWorkToAuto(otherWork);
@@ -200,5 +205,18 @@ public class AutoService {
         auto.setId(id);
         autoRepository.save(auto);
     }
+
+    @Transactional
+    public List<Image> getListPhotosDamage(Auto auto) {
+        List<Image> listPhotosDamage = new ArrayList<>();
+        for (Image img : auto.getImages()) {
+            if (!img.isPreviewImage()) {
+                listPhotosDamage.add(img);
+                System.out.println(img.isPreviewImage());
+            }
+        }
+        return listPhotosDamage;
+    }
+
 
 }

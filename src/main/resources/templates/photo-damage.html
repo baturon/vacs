@@ -43,7 +43,8 @@
                 <a style="color: white" class="nav-link" th:href="@{/autos}">Ваши автомобили </a>
             </li>
             <li class="nav-item">
-                <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по авто </a></li>
+                <a style="color: white" class="nav-link" th:href="@{/autos/{id}(id=${auto.getId()})}">Информация по
+                    авто </a></li>
             <li class="nav-item">
                 <a style="color: red" class="nav-link active" aria-current="page"
                    th:href="@{/autos/photo/{id}(id=${auto.getId()})}">Фото с повреждениями авто </a>
@@ -53,56 +54,72 @@
                     работы </a>
             </li>
             <li class="nav-item">
-                <a style="color: white" class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
+                <a style="color: white" class="nav-link" th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие
+                    ремонтные работы </a>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a style="color: white" class="nav-link" href="#">Документация </a>-->
-<!--            </li>-->
+            <!--            <li class="nav-item">-->
+            <!--                <a style="color: white" class="nav-link" href="#">Документация </a>-->
+            <!--            </li>-->
         </ul>
         <br>
 
-        <div class="card mb-3 row">
-            <br>
-            <h5 class="card-title justify-content-center" style="color: black; font-size: 1.4rem"
-                th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
-                Auto</h5>
-            <br>
 
-            <div class="thumb">
-            <span th:if="${auto.getImages().size()==1}">
-            <img class="bg-opacity-10" width="400" th:src="@{/img/background12.jpg}" alt=""/>
-            </span>
-                <div class="container">
-
-                    <div class="row" th:unless="${auto.getImages().isEmpty()}" th:each="id,stat:${auto.getImages()}">
+        <br>
 
 
-                        <div th:unless="${auto.images.get(stat.index).isPreviewImage()}">
-                            <img class="scale img-rounded col-md-3"
-                                 th:src="@{/images/{id}(id=${auto.images.get(stat.index).getId()})}"
-                                 th:height="200" alt=""/>
-                            <div class="text-muted mb-3 col-md-3"
-                                 th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">date
-                                download
-                            </div>
-                        </div>
+        <div class="card text-center">
+            <div class="card-header"
+                 th:text="${'Авто: ' + auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">
+            </div>
+            <div class="card-body">
+
+                <div class="row " th:if="${auto.images.size()==1}">
+                    <div class="col-md align-items-center">
+                        <figure class="figure">
+                            <img class="rounded mx-auto d-block" style="opacity: 60%;" width="400"
+                                 th:src="@{/img/background12.jpg}" alt=""/>
+                            <figcaption class="figure-caption">Здесь будут храниться фото с повреждениями</figcaption>
+                        </figure>
                     </div>
-
                 </div>
+
+
+                <div class="row" th:each="id,stat:${auto.images}">
+
+
+                    <div th:unless="${auto.images.get(stat.index).isPreviewImage()}">
+                        <figure class="figure ">
+                            <img class="figure-img d-block rounded scale"
+                                 th:src="@{/images/{id}(id=${auto.images.get(stat.index).getId()})}"
+                                 width="800" alt=""/>
+                            <figcaption class="figure-caption"
+                                        th:text="${'Загружено:  ' + auto.images.get(stat.index).getDateOfDownload()}">
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
-            <br>
-            <br>
+            <div class="card-footer text-muted">
+                <label for="formFile" class="form-label">Загрузите фото с повреждениями авто: </label>
+
+            </div>
         </div>
-            <div class="text-muted mb-3">
-                <label style="color: white" for="formFile"  class="form-label">Загрузите фото авто с повреждениями: </label>
-                <input class="form-control" name="photo" type="file" id="formFile" multiple/>
-                <!--                    <div class="invalid-feedback">Введите пробег</div>-->
-            </div>
 
+        <br>
+        <div class="mb-3">
 
+            <input class="form-control" name="photo" type="file" id="formFile" multiple required/>
+        </div>
         <div class="d-grid gap-2 mb-3">
             <input class="btn btn-secondary" type="submit" value="Добавить фото"/>
         </div>
+
+
     </form>
 
 </div>

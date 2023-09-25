@@ -36,4 +36,16 @@ public class OtherWorkService {
         Collections.sort(otherWorkListSorted, Comparator.comparing(OtherWork::getDateChange));
         return otherWorkListSorted;
     }
+
+
+
+
+    public int getTotalAmount(List<OtherWork> otherWorkListSortedByDates) {
+        int amount = 0;
+        for (OtherWork otherWork:otherWorkListSortedByDates) {
+            int temp=otherWork.getCostWork()+otherWork.getCostPart();
+            amount=amount+temp;
+        }
+        return amount;
+    }
 }

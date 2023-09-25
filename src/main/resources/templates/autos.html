@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="../static/scss/custom.scss" th:href="@{/scss/custom.scss}" rel="stylesheet"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Autos</title>
 
     <style>
@@ -32,14 +40,13 @@
 
 
 <div class="container">
-    <h2 style="color: white ">Система учета и контроля транспортных средств</h2>
-    <hr>
-
+    <br>
+    <h3 style="color: white ">Система учета и контроля транспортных средств</h3>
+    <hr class="border border-top border-2 opacity-75">
     <ul class="list-group" id="myList">
-        <h2 style="color: white ">Список Ваших транспортных средств</h2>
+        <h5 style="color: white ">Список Ваших транспортных средств</h5>
         <br>
-        <br>
-        <br>
+
         <h7 style="color: white ">Введите данные для поиска транспортного средства в вашем списке:</h7>
         <br>
         <input class="form-control" id="myInput" type="text" placeholder="Поиск...">
@@ -53,7 +60,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} or ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.insuranceEndDate>data} and ${auto.dateCompletionTechnicalInspection==null}">
+                <li th:if="${auto.insuranceEndDate>dateNow} and ${auto.dateCompletionTechnicalInspection==null}">
                     <a class="list-group-item"
                        th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
@@ -64,7 +71,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} or ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.dateCompletionTechnicalInspection>data} and ${auto.insuranceEndDate==null} ">
+                <li th:if="${auto.dateCompletionTechnicalInspection>dateNow} and ${auto.insuranceEndDate==null} ">
                     <a class="list-group-item"
                        th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
@@ -87,7 +94,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} and ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.insuranceEndDate>data}and ${auto.dateCompletionTechnicalInspection>data} ">
+                <li th:if="${auto.insuranceEndDate>dateNow}and ${auto.dateCompletionTechnicalInspection>dateNow} ">
                     <a class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
 
@@ -100,7 +107,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} and ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.insuranceEndDate<=data} or ${auto.dateCompletionTechnicalInspection<=data} ">
+                <li th:if="${auto.insuranceEndDate<=dateNow} or ${auto.dateCompletionTechnicalInspection<=dateNow} ">
                     <a style="color: red;"
                        class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
@@ -112,7 +119,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} or ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.insuranceEndDate<=data} and ${auto.dateCompletionTechnicalInspection==null} ">
+                <li th:if="${auto.insuranceEndDate<=dateNow} and ${auto.dateCompletionTechnicalInspection==null} ">
                     <a style="color: red;"
                        class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
@@ -123,7 +130,7 @@
 
         <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
             <div th:if="${auto.insuranceEndDate!=null} or ${auto.dateCompletionTechnicalInspection!=null} ">
-                <li th:if="${auto.insuranceEndDate==null} and ${auto.dateCompletionTechnicalInspection<=data} ">
+                <li th:if="${auto.insuranceEndDate==null} and ${auto.dateCompletionTechnicalInspection<=dn} ">
                     <a style="color: red;"
                        class="list-group-item" th:href="@{/autos/{id}(id=${auto.getId()})}"
                        th:text="${auto.getBrand()+' '+auto.getModel()+' '+auto.getLicensePlate()}">auto</a>
@@ -136,6 +143,23 @@
         <br>
         <a th:unless="${autos.isEmpty()}" class="list-group-item " href="/autos/new">Добавить новый авто... </a>
     </ul>
+    <br>
+
+
+
+
+    <div th:each="auto : ${autos}" th:unless="${autos.isEmpty()}">
+            <li th:if="(${#temporals.day(dateNow)}-${#temporals.day(auto.dateChangeMileage)})>${auto.daysReminderChangeMileage} ">
+                <div class="alert alert-danger" role="alert" >
+                    Пора обновить пробег на авто <a th:href="@{/autos/{id}(id=${auto.getId()})}" class="alert-link" th:text="${auto.getBrand() +' '+auto.getModel()+' '+auto.getLicensePlate()}" ></a>.
+                </div>
+
+
+            </li>
+    </div>
+
+
+
 </div>
 
 </body>

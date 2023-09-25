@@ -104,7 +104,7 @@
                 работы </a>
         </li>
         <li class="nav-item">
-            <a style="color: darkgoldenrod" class="nav-link active" aria-current="page"
+            <a style="color: darkorange" class="nav-link active" aria-current="page"
                th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
 <!--        <li class="nav-item">-->
@@ -136,15 +136,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <input class="form-control" id="search" type="text" placeholder="Поиск...">
+
+                <input th:if="${!otherWorkList.isEmpty()}" class="form-control" id="search" type="text" placeholder="Поиск...">
                 <br>
                 <tr th:each="mWork:${otherWorkList}">
                     <td th:text="${mWork.nameWork}"></td>
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
-                    <td th:text="${mWork.costWork}"></td>
-                    <td th:text="${mWork.costPart}"></td>
-                    <td th:text="${mWork.comments}"></td>
+                    <td th:unless="${mWork.costWork==0}" th:text="${mWork.costWork}"></td>
+                    <td th:if="${mWork.costWork==0}" th:text="'-'"></td>
+                    <td th:unless="${mWork.costPart==0}" th:text="${mWork.costPart}"></td>
+                    <td th:if="${mWork.costPart==0}" th:text="'-'"></td>
+
+                    <td th:if="${!mWork.comments.isEmpty()}" th:text="${mWork.comments}"></td>
+                    <td th:if="${mWork.comments.isEmpty()}" th:text="'-'"></td>
+
                 </tr>
                 </tbody>
             </table>
@@ -221,7 +227,7 @@
             <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
                     data-bs-target="#dataChangeOilModal">Ввести данные по ремонту
             </button>
-                <button type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
+                <button th:if="${!otherWorkList.isEmpty()}" type="button" class="btn btn-primary btn-sm m-lg-auto" data-bs-toggle="modal"
                         data-bs-target="#inputDatePeriodModal">Получить отчет за период
                 </button>
             </div>

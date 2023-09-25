@@ -1,23 +1,22 @@
 package com.example.vacs.models;
 
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
-@Entity
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "auto")
@@ -29,17 +28,16 @@ public class Auto {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, max = 20, message = "Выберите марку")
     @Column(name = "brand")
     private String brand;
 
+
     @NotEmpty
-    @Size(min = 2, max = 20, message = "Выберите модель")
     @Column(name = "model")
     private String model;
 
     @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 7, max = 10, message = "Номер должен содержать от 7 до 10 символов ")
+    @Size(min = 4, message = "Номер должен содержать от 4 до 10 символов ")
     @Column(name = "license_plate")
     private String licensePlate;
 
@@ -55,6 +53,15 @@ public class Auto {
 
     @Column(name = "mileage")
     private int mileage;
+
+    @Column(name = "days_reminder_change_mileage")
+    private int daysReminderChangeMileage;
+
+    @Column(name = "date_change_mileage")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateChangeMileage;
+
 
     @Column(name = "insurance_end_date")
     @Temporal(TemporalType.DATE)
@@ -84,8 +91,6 @@ public class Auto {
     private List<MaintenanceWork> maintenanceWorkList = new ArrayList<>();
 
 
-
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "auto")
     private List<OtherWork> otherWorksList = new ArrayList<>();
 
@@ -113,9 +118,11 @@ public class Auto {
         otherWorksList.add(otherWork);
     }
 
-    public List<OtherWork> getOtherWorksList() {
-
-        Collections.sort(otherWorksList, Comparator.comparing(OtherWork::getDateChange));
-        return otherWorksList;
+    protected boolean canEqual(final Object other) {
+        return other instanceof Auto;
     }
+
+
+
+
 }

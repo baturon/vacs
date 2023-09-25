@@ -90,7 +90,7 @@
                 работы </a>
         </li>
         <li class="nav-item">
-            <a style="color: darkgoldenrod" class="nav-link active" aria-current="page"
+            <a style="color: darkorange" class="nav-link active" aria-current="page"
                th:href="@{/autos/other-work/{id}(id=${auto.getId()})}">Другие ремонтные работы </a>
         </li>
 <!--        <li class="nav-item">-->
@@ -130,11 +130,20 @@
                     <td th:text="${mWork.nameWork}"></td>
                     <td th:text="${mWork.mileageChange}"></td>
                     <td th:text="${#temporals.format(mWork.dateChange, 'dd-MM-yyyy')}"></td>
-                    <td th:text="${mWork.costWork}"></td>
-                    <td th:text="${mWork.costPart}"></td>
+                    <td th:unless="${mWork.costWork==null}" th:text="${mWork.costWork}"></td>
+                    <td th:if="${mWork.costWork==null}" th:text="'-'"></td>
+                    <td th:unless="${mWork.costPart==null}" th:text="${mWork.costPart}"></td>
+                    <td th:if="${mWork.costPart==null}" th:text="'-'"></td>
+                    <td th:if="${mWork.costPart==null} and ${mWork.costWork==null}" th:text="'-'"></td>
                     <td th:text="${mWork.costWork}+${mWork.costPart}"></td>
                 </tr>
                 </tbody>
+
+                <tfoot>
+
+               <tr><th><th><th><th><th th:text="'Итоговая сумма за отчетный период: '"> <th th:text="${totalAmount}"></th></th></th></th></th></th> </tr>
+
+                </tfoot>
             </table>
         </div>
 
